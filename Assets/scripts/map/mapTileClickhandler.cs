@@ -4,40 +4,35 @@ using UnityEngine;
 
 public class mapTileClickhandler : MonoBehaviour
 {
-    public GameObject thisTile;
+    private Camera thisTile ;
 
     private bool ithaveBeenClicked = false;
 
 
 
     // Start is called before the first frame update
-    /* void Start()
+     void Start()
      {
-
-     }*/
+      
+     }
 
     // Update is called once per frame
-    void Update()
+
+  /*  void Update()
     {
-        if (Input.GetMouseButtonDown(0)) {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit, 20.0f))
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("nejaky ten click");
+            RaycastHit2D hit = Physics2D.Raycast(Input.mousePosition, new Vector2 (0,0));
+            if (hit.collider != null )
             {
-                Debug.Log("Aspon trochu sem klikl");
+                Debug.Log("Player Detected");
+              
 
-                if (hit.transform  != null)
-                {
-                    OnClick();
-                }
             }
         }
-
-
-
     }
-   
+
     private void OnClick()
     {
         Debug.Log("click");
@@ -60,5 +55,5 @@ public class mapTileClickhandler : MonoBehaviour
         }
         
        
-    }
+    }*/
 }
