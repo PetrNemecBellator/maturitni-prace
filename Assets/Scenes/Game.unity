@@ -377,9 +377,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dacd30ded4b26f4b8a3d1ad0dbf6fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameTile: {fileID: 5071352199897574537, guid: 6847b34a533bef94192fd92b8e81c081,
+  gameTile: {fileID: 4041787312596710677, guid: 6847b34a533bef94192fd92b8e81c081,
     type: 3}
   backGround: {fileID: 778829310}
+  testUnit: {fileID: 3976284784368767945, guid: e3bd5ebc599a3504d92c652e3758230b,
+    type: 3}
 --- !u!4 &1489056307
 Transform:
   m_ObjectHideFlags: 0
