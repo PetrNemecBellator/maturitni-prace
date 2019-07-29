@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 4584673546152180720}
   - component: {fileID: 5286323490373182065}
   - component: {fileID: 7828015066152995877}
-  - component: {fileID: 5575155297566597444}
+  - component: {fileID: 1108415268116366286}
   m_Layer: 0
   m_Name: hraciPlochaPrazdna
   m_TagString: Untagged
@@ -221,7 +221,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &5575155297566597444
+--- !u!114 &1108415268116366286
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -234,5 +234,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   markedGamefield: {fileID: 21300000, guid: e46eb9d38254c4e4981711fadcb16572, type: 3}
-  emptyGamefield: {fileID: 21300000, guid: 9e755c8cb21ed6b4c9e6797040efd9e1, type: 3}
-  originalEmtyUnitLayer: {fileID: 2220975002382098084}
+  emptyGamefield: {fileID: 21300000, guid: aad30370d86314a4e95814599e02d236, type: 3}
+  originalEmtyUnitLayer: {fileID: 3976284784368767945, guid: e3bd5ebc599a3504d92c652e3758230b,
+    type: 3}
