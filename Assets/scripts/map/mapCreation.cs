@@ -7,7 +7,11 @@ public class mapCreation : MonoBehaviour
     // Start is called before the first frame update
         public GameObject gameTile;
         public GameObject backGround;
-        public GameObject testUnit;
+
+        public GameObject testVez;
+        public GameObject testStit;
+        public GameObject testSip;
+
         public static GameObject testStaticky;
         private List<List<TileClick>> maptiles = new List<List<TileClick>>();
 
@@ -27,13 +31,13 @@ public class mapCreation : MonoBehaviour
 
         for (float y = backGround.transform.transform.position.y - scaleOfObject.y; y < scaleOfObject.y; y += 0.95f)
         {
-            posY++;
+         
             posX = 0;
             List<TileClick> tileRow = new List<TileClick>();
 
             for (float x = backGround.transform.transform.position.x - scaleOfObject.x; x < scaleOfObject.x * 2 * sizeOfMapBlock; x += sizeOfMapBlock)
             {
-                posX++;
+               
                 if (changeDirectionOftile)
                 {
 
@@ -44,7 +48,7 @@ public class mapCreation : MonoBehaviour
                     myTile.setTileCoordinates(new Vector2(posX, posY));
                     tileRow.Add(myTile);
                     changeDirectionOftile = !changeDirectionOftile;
-                    continue;
+                    
                 }
                 else
                 {
@@ -55,14 +59,25 @@ public class mapCreation : MonoBehaviour
                     myTile.setTileCoordinates(new Vector2(posX, posY));
                     tileRow.Add(myTile);
                     changeDirectionOftile = !changeDirectionOftile;
-                    continue;
+                    
                 }
+                posX++;
             }
             maptiles.Add(tileRow);
+
+            posY++;
         }
+      
 
     }
+    public static void moveUnits(List<TileClick> unitsToMove, Vector2 vectorToUnitsMove)
+    {
+
+    }
+
+
     void Start(){
+        Debug.Log("MAP CRATION STARTED ...");
         for(int y=0; y < maptiles.Count; y++)
         {
             for(int x=0; x < maptiles[y].Count; x++)
@@ -70,12 +85,29 @@ public class mapCreation : MonoBehaviour
                 if (x == 10 && y == 9)
                 {
                     Debug.Log("x: " + maptiles[y][x].getCoordinates().x.ToString() + " y: " + maptiles[y][x].getCoordinates().y.ToString());
-                    maptiles[y][x].setTypeOfunit(testUnit);
-                  
+                    maptiles[y][x].setTypeOfunit(testVez);
+                   
                 }
-                
+                if(x== 10 && y == 10)
+                {
+                    Debug.Log("x: " + maptiles[y][x].getCoordinates().x.ToString() + " y: " + maptiles[y][x].getCoordinates().y.ToString());
+                    maptiles[y][x].setTypeOfunit(testSip);
+                   
+                }
+                if (x == 9 && y == 9){
+                    Debug.Log("x: " + maptiles[y][x].getCoordinates().x.ToString() + " y: " + maptiles[y][x].getCoordinates().y.ToString());
+                    maptiles[y][x].setTypeOfunit(testStit);
+                 
+                }
+
             }
         }
+        Debug.Log("auto fight TEST");
+        Debug.Log("maptiles coor attacking unit:" +maptiles[11][11].getCoordinates().x + " y" + maptiles[11][11].getCoordinates().y);
+        Debug.Log("maptiles coor passive unit:" +maptiles[10][10].getCoordinates().x + " y" + maptiles[10][10].getCoordinates().y);
+
+
+        TileClick.moveUnitWithFightMode(maptiles[11][11].gameObject, maptiles[10][10].gameObject);
     }
     // Update is called once per frame
     void Update()
