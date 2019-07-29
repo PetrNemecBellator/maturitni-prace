@@ -235,3 +235,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   markedGamefield: {fileID: 21300000, guid: e46eb9d38254c4e4981711fadcb16572, type: 3}
   emptyGamefield: {fileID: 21300000, guid: 9e755c8cb21ed6b4c9e6797040efd9e1, type: 3}
+  originalEmtyUnitLayer: {fileID: 2220975002382098084}

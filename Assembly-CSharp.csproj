@@ -62,7 +62,8 @@
   <ItemGroup>
     <Compile Include="Assets\ControlerOfClickToMap.cs" />
     <Compile Include="Assets\scripts\map\mapCreation.cs" />
-    <Compile Include="Assets\TileClick.cs" />
+    <Compile Include="Assets\scripts\TileClick.cs" />
+    <Compile Include="Assets\Vez.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/petrn/OneDrive/Documents/SimpleStrategicGameTryangles/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

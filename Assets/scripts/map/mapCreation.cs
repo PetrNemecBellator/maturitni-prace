@@ -8,7 +8,7 @@ public class mapCreation : MonoBehaviour
         public GameObject gameTile;
         public GameObject backGround;
         public GameObject testUnit;
-
+        public static GameObject testStaticky;
         private List<List<TileClick>> maptiles = new List<List<TileClick>>();
 
     private const float sizeOfMapBlock = 0.8F;
@@ -71,6 +71,7 @@ public class mapCreation : MonoBehaviour
                 {
                     Debug.Log("x: " + maptiles[y][x].getCoordinates().x.ToString() + " y: " + maptiles[y][x].getCoordinates().y.ToString());
                     maptiles[y][x].setTypeOfunit(testUnit);
+                  
                 }
                 
             }
