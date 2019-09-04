@@ -76,38 +76,53 @@ public class mapCreation : MonoBehaviour
     }
 
 
-    void Start(){
+    void Start() {
         Debug.Log("MAP CRATION STARTED ...");
-        for(int y=0; y < maptiles.Count; y++)
+        for (int y = 0; y < maptiles.Count; y++)
         {
-            for(int x=0; x < maptiles[y].Count; x++)
+            for (int x = 0; x < maptiles[y].Count; x++)
             {
                 if (x == 10 && y == 9)
                 {
                     Debug.Log("x: " + maptiles[y][x].getCoordinates().x.ToString() + " y: " + maptiles[y][x].getCoordinates().y.ToString());
                     maptiles[y][x].setTypeOfunit(testVez);
-                   
+
                 }
-                if(x== 10 && y == 10)
+                if (x == 10 && y == 10)
                 {
                     Debug.Log("x: " + maptiles[y][x].getCoordinates().x.ToString() + " y: " + maptiles[y][x].getCoordinates().y.ToString());
                     maptiles[y][x].setTypeOfunit(testSip);
-                   
+
                 }
-                if (x == 9 && y == 9){
+                if (x == 9 && y == 9) {
                     Debug.Log("x: " + maptiles[y][x].getCoordinates().x.ToString() + " y: " + maptiles[y][x].getCoordinates().y.ToString());
                     maptiles[y][x].setTypeOfunit(testStit);
-                 
+
                 }
 
             }
         }
+
+
+        for (int y = 0; y < maptiles.Count; y++)
+        {
+            for (int x = 0; x < maptiles[y].Count; x++)
+            {
+                Debug.Log("name of maptile: " + maptiles[y][x].transform.GetChild(0).name);
+            }
+        }
         Debug.Log("auto fight TEST");
-        Debug.Log("maptiles coor attacking unit:" +maptiles[11][11].getCoordinates().x + " y" + maptiles[11][11].getCoordinates().y);
-        Debug.Log("maptiles coor passive unit:" +maptiles[10][10].getCoordinates().x + " y" + maptiles[10][10].getCoordinates().y);
+        Debug.Log("");
+
+        Debug.Log("maptiles coor attacking unit:" + maptiles[9][10].getCoordinates().x + " y" + maptiles[9][10].getCoordinates().y);
+        Debug.Log("maptiles coor passive unit:" + maptiles[9][9].getCoordinates().x + " y" + maptiles[9][9].getCoordinates().y);
+
+        Debug.Log("chack jednotky: " + maptiles[9][10].getChildObject());
+        Debug.Log("chack jednotky: " + maptiles[9][9].getChildObject());
 
 
-        TileClick.moveUnitWithFightMode(maptiles[11][11].gameObject, maptiles[10][10].gameObject);
+
+         TileClick.moveUnitWithFightMode(  maptiles[9][10].gameObject, maptiles[9][9].gameObject);
     }
     // Update is called once per frame
     void Update()

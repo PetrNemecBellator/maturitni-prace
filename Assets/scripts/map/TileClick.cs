@@ -49,7 +49,7 @@ public  class TileClick : MonoBehaviour
         Debug.Log("tile child name: "+ typeOfunitCurectlyHaving.name);
     }
 
-    public Unit getClassOfUnit(GameObject unit)
+   /*public Unit getClassOfUnit(GameObject unit)
     {
         if (unit.GetComponent<Vez>() as Vez == null)
         {
@@ -69,7 +69,7 @@ public  class TileClick : MonoBehaviour
         }
         Debug.Log("je to vez");
         return unit.GetComponent<Vez>();
-    }
+    }*/
     void OnMouseDown()
     {
     
@@ -282,14 +282,30 @@ public  class TileClick : MonoBehaviour
 
     public  Vector3 offsetOfUnit(GameObject unit)
     {
-        Debug.Log("check of offset: X " + unit.GetComponent<Unit>().getoffset().x + " Y:" + unit.GetComponent<Unit>().getoffset().y);
-        return new Vector3(this.gameObject.transform.position.x + unit.GetComponent<Unit>().getoffset().x, this.gameObject.transform.position.y + unit.GetComponent<Unit>().getoffset().y, 0); //this.gameObject.transform.position.x)
+          Debug.Log("check of offset: X " + unit.GetComponent<Unit>().getoffset().x + " Y:" + unit.GetComponent<Unit>().getoffset().y);
+          return new Vector3(this.gameObject.transform.position.x + unit.GetComponent<Unit>().getoffset().x, this.gameObject.transform.position.y + unit.GetComponent<Unit>().getoffset().y, 0); //this.gameObject.transform.position.x)
 
 
     }
+    public Unit getChildObject()
+    {
+        Unit childUnit = (Unit)this.typeOfunitCurectlyHaving.gameObject.GetComponent<Unit>() as Unit;
+        Debug.Log("jameno child objectu: " + this.typeOfunitCurectlyHaving.name);
+        if (childUnit == null)
+        {
+            
+            Debug.Log("non child unit");
+            return null;
+        }
+        Debug.Log("name of nonchild: " + childUnit.name);
+        return childUnit;
+    }
+
+
     public void setTypeOfunit(GameObject unit)
     {
         Debug.Log("type of placed unit:" + unit.name);
+        
         GameObject newUnit = Instantiate(unit, offsetOfUnit(unit), Quaternion.Euler(0, 0, 0), this.transform);
         Destroy(this.typeOfunitCurectlyHaving);
         Destroy(this.transform.GetChild(0).gameObject);
@@ -309,11 +325,10 @@ public  class TileClick : MonoBehaviour
     */
         Debug.Log("fight mode time function ");
         Debug.Log("Attacker " + attackingObj.transform.GetChild(0).name);
-
-
         Debug.Log("Pasive obj " + destinationObject.transform.GetChild(0).name);
-        Unit attacker = attackingObj.transform.GetChild(0).GetComponent<Unit>() as Unit;
-        Unit passiveunit = destinationObject.transform.GetChild(0).GetComponent<Unit>() as Unit;
+
+        Unit attacker = attackingObj.gameObject.GetComponent<TileClick>().getChildObject() as Unit;
+        Unit passiveunit = destinationObject.gameObject.GetComponent<TileClick>().getChildObject() as Unit;
         //  Debug.Log("attacke: " + attacker.ToString() + " passive unit: " + passiveunit.ToString());
 
         Debug.Log("attacker null" + (attacker != null).ToString() + " passive " + (passiveunit != null).ToString() );
@@ -322,41 +337,58 @@ public  class TileClick : MonoBehaviour
         {
 
             Debug.Log("utok AUTOMATICKY UTOKkkkkkkkkkkkkk");
-            Debug.Log("Attacker " + attackingObj.transform.GetChild(0).name);
-            Debug.Log("Pasive obj " + destinationObject.transform.GetChild(0).name);
+            Debug.Log("Attacker " + attacker.name);
+            Debug.Log("Pasive obj " + passiveunit.name);
 
             Unit unit = Unit.unitFight(attacker, passiveunit);
             if (unit == null)
             {
                 //bouth loses
-                Destroy(attacker.gameObject);
-                Destroy(attacker.gameObject);
+                Destroy(attacker);
+                Destroy(passiveunit);
+                
             }
             else
             {
+               
                 //Debug.Log("vitez je: " + winner.gameObject.name);
-                GameObject g  = unit.transform.parent.transform.gameObject;
+                GameObject g = unit.gameObject;//\.transform.parent.transform.gameObject;
 
-                Debug.Log("type of placed unit:" + unit.name);
-                GameObject newUnit = Instantiate(g, g.GetComponent<TileClick>().offsetOfUnit(g), Quaternion.Euler(0, 0, 0), destinationObject.transform);
-                Destroy(destinationObject.gameObject.GetComponent<TileClick>().typeOfunitCurectlyHaving);
-                Destroy(destinationObject.gameObject.transform.GetChild(0).gameObject);
+                Debug.Log("type of placed unit:" + g.name);
+                Debug.Log(g.transform.parent.GetComponent<TileClick>().offsetOfUnit(g));
+                Debug.Log(destinationObject.GetComponentInParent<Transform>());
 
-                newUnit.transform.parent = destinationObject.transform; //posunu objekt na pozici destination
 
-                //this.gameObject.transform.GetChild(0).gameObject;
+                /* GameObject newUnit = Instantiate(g, g.GetComponentInParent<TileClick>().offsetOfUnit(g), Quaternion.Euler(0, 0, 0), destinationObject.transform);
+               //  Destroy(destinationObject.gameObject.GetComponent<TileClick>().typeOfunitCurectlyHaving);
 
-                Debug.Log("name by fight move new unit: " + newUnit.name);
+                 destinationObject.GetComponent<TileClick>().typeOfunitCurectlyHaving = newUnit;
+                 newUnit.transform.parent = destinationObject.transform; //posunu objekt na pozici destination tile
+
+                 Destroy(destinationObject.gameObject.transform.GetChild(0).gameObject);
+                 Destroy(g);
+
+
+                 Debug.Log("name by fight move new unit: " + newUnit.name);
+             */
+                TileClick destTile = destinationObject.GetComponent<TileClick>() as TileClick;
+                TileClick attackerTile = attackingObj.GetComponent<TileClick>() as TileClick;
+
+                attackerTile.unSetUnit();
+                destTile.setTypeOfunit(g);
+
+                Destroy(g);
+               
             }
 
         }
         else{
             Debug.Log("Jen p5esun jednotky");
-            destinationObject.gameObject.GetComponent<TileClick>().setTypeOfunit(attackingObj.transform.GetChild(0).gameObject);
+           // destinationObject.gameObject.GetComponent<TileClick>().setTypeOfunit(attackingObj.transform.GetChild(0).gameObject);
             attackingObj.gameObject.GetComponent<TileClick>().unSetUnit();
 
         }
-                               
+        
     }
 
 
@@ -382,7 +414,8 @@ public  class TileClick : MonoBehaviour
         Debug.Log("unset");
         try
         {
-            Destroy(this.gameObject.transform.GetChild(0).gameObject);
+            Debug.Log("unset object: " + this.getChildObject().name);
+            Destroy(this.getChildObject().gameObject);
         }
         catch (System.Exception e)
         {
