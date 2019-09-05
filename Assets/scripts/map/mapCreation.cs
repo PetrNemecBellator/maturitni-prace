@@ -7,6 +7,7 @@ public class mapCreation : MonoBehaviour
     // Start is called before the first frame update
         public GameObject gameTile;
         public GameObject backGround;
+        public GameObject hrac1Test; 
 
         public GameObject testVez;
         public GameObject testStit;
@@ -111,6 +112,8 @@ public class mapCreation : MonoBehaviour
                 Debug.Log("name of maptile: " + maptiles[y][x].transform.GetChild(0).name);
             }
         }
+
+        //** tests
         Debug.Log("auto fight TEST");
         Debug.Log("");
 
@@ -120,9 +123,10 @@ public class mapCreation : MonoBehaviour
         Debug.Log("chack jednotky: " + maptiles[9][10].getChildObject());
         Debug.Log("chack jednotky: " + maptiles[9][9].getChildObject());
 
-
-
-         TileClick.moveUnitWithFightMode(  maptiles[9][10].gameObject, maptiles[9][9].gameObject);
+        Hrac testHrace = hrac1Test.GetComponent<Hrac>();
+        testHrace.setNewGroupOfPlayerUnits(new List<TileClick>() {maptiles[9][9], maptiles[10][10], maptiles[9][10]} );
+        testHrace.selectGroupOfUnits(0);
+        // TileClick.moveUnitWithFightMode(  maptiles[9][10].gameObject, maptiles[9][9].gameObject);
     }
     // Update is called once per frame
     void Update()

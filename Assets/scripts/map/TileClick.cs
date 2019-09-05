@@ -109,8 +109,8 @@ public  class TileClick : MonoBehaviour
 
             if (wasAnyTileClicked && lastClikedTile != null && lastClikedTile != this.gameObject &&
                 Mathf.Abs(this.getCoordinates().x - CoordinetsOfPreviusObject.x) <= 1 &&
-                Mathf.Abs((this.getCoordinates().y - CoordinetsOfPreviusObject.y)) <= 1)
-            {
+                Mathf.Abs((this.getCoordinates().y - CoordinetsOfPreviusObject.y)) <= 1){
+
                 Unit attacker = lastClikedTile.transform.GetChild(0).gameObject.GetComponent<Unit>() as Unit;
                 Unit passiveunit = this.gameObject.transform.GetChild(0).GetComponent<Unit>() as Unit;
                 //  Debug.Log("attacke: " + attacker.ToString() + " passive unit: " + passiveunit.ToString());

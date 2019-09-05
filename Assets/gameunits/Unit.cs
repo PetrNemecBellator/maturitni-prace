@@ -62,7 +62,7 @@ public abstract class Unit : MonoBehaviour
 
         } while (allPossibilities< 2);
 
-        throw new System.Exception("Incorect fight option line 36", new System.Exception());
+        throw new System.Exception("Incorect fight option ", new System.Exception());
         return null;
     }
 }
