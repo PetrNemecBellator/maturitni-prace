@@ -134,7 +134,7 @@ public  class TileClick : MonoBehaviour
                       
                         Debug.Log("vitez je: " + winner.gameObject.name);
 
-                        spawnMovedUnit(winner.transform.parent.transform.gameObject);
+                        //spawnMovedUnit(winner.transform.parent.transform.gameObject);
 
 
                     }
@@ -220,12 +220,12 @@ public  class TileClick : MonoBehaviour
         {
             Debug.Log("name of actual child object" + this.transform.GetChild(0).gameObject.name);
 
-            Debug.Log("jmeno naposledy klikleho objektu " + lastClikedTile.name);
+            Debug.Log("jmeno naposledy klikleho objektu " + lastClikedTile.GetComponent<TileClick>().getChildObject().name);
 
-            Debug.Log("child of last clicked object " + scriptOfLastClickedTile.transform.gameObject.transform.GetChild(0).gameObject.name);
+            Debug.Log("child of last clicked object " + scriptOfLastClickedTile.GetComponent<TileClick>().getChildObject().name);
 
 
-            this.setTypeOfunit(scriptOfLastClickedTile.transform.GetChild(0).gameObject);
+            this.setTypeOfunit(scriptOfLastClickedTile.getChildObject().gameObject);
 
 
             scriptOfLastClickedTile.unSetUnit();
@@ -297,7 +297,7 @@ public  class TileClick : MonoBehaviour
             Debug.Log("non child unit");
             return null;
         }
-        Debug.Log("name of nonchild: " + childUnit.name);
+        Debug.Log("name of child: " + childUnit.name);
         return childUnit;
     }
 
@@ -354,23 +354,7 @@ public  class TileClick : MonoBehaviour
                 //Debug.Log("vitez je: " + winner.gameObject.name);
                 GameObject g = unit.gameObject;//\.transform.parent.transform.gameObject;
 
-                Debug.Log("type of placed unit:" + g.name);
-                Debug.Log(g.transform.parent.GetComponent<TileClick>().offsetOfUnit(g));
-                Debug.Log(destinationObject.GetComponentInParent<Transform>());
-
-
-                /* GameObject newUnit = Instantiate(g, g.GetComponentInParent<TileClick>().offsetOfUnit(g), Quaternion.Euler(0, 0, 0), destinationObject.transform);
-               //  Destroy(destinationObject.gameObject.GetComponent<TileClick>().typeOfunitCurectlyHaving);
-
-                 destinationObject.GetComponent<TileClick>().typeOfunitCurectlyHaving = newUnit;
-                 newUnit.transform.parent = destinationObject.transform; //posunu objekt na pozici destination tile
-
-                 Destroy(destinationObject.gameObject.transform.GetChild(0).gameObject);
-                 Destroy(g);
-
-
-                 Debug.Log("name by fight move new unit: " + newUnit.name);
-             */
+              
                 TileClick destTile = destinationObject.GetComponent<TileClick>() as TileClick;
                 TileClick attackerTile = attackingObj.GetComponent<TileClick>() as TileClick;
 
@@ -414,6 +398,7 @@ public  class TileClick : MonoBehaviour
         Debug.Log("unset");
         try
         {
+            Debug.Log("");
             Debug.Log("unset object: " + this.getChildObject().name);
             Destroy(this.getChildObject().gameObject);
         }
