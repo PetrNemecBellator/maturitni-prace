@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class mapCreation : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -14,7 +15,7 @@ public class mapCreation : MonoBehaviour
         public GameObject testSip;
 
         public static GameObject testStaticky;
-        private List<List<TileClick>> maptiles = new List<List<TileClick>>();
+        private static List<List<TileClick>> maptiles = new List<List<TileClick>>();
 
     private const float sizeOfMapBlock = 0.8F;
 
@@ -109,7 +110,7 @@ public class mapCreation : MonoBehaviour
         {
             for (int x = 0; x < maptiles[y].Count; x++)
             {
-                Debug.Log("name of maptile: " + maptiles[y][x].transform.GetChild(0).name);
+              //  Debug.Log("name of maptile: " + maptiles[y][x].transform.GetChild(0).name);
             }
         }
 
@@ -129,6 +130,22 @@ public class mapCreation : MonoBehaviour
         // TileClick.moveUnitWithFightMode(  maptiles[9][10].gameObject, maptiles[9][9].gameObject);
     }
     // Update is called once per frame
+
+    public static void moveUnits(Vector2 tileStart, Vector2 destinationTile)
+    {
+        Debug.Log("move group of units TEST");
+        Debug.Log("tilestart Coordinates" + tileStart.ToString());
+        Debug.Log("tileDESTINATION Coordinates" + destinationTile.ToString());
+
+        maptiles[(int)tileStart.y][(int)tileStart.x].changeToUnMark();
+        maptiles[(int)destinationTile.y][(int)destinationTile.x].changeToUnMark();
+
+        maptiles[(int)destinationTile.y][(int)destinationTile.x].setTileCoordinates(destinationTile);
+
+        TileClick.moveUnitWithFightMode(maptiles[(int)tileStart.y][(int)tileStart.x].gameObject, maptiles[(int)destinationTile.y] [(int)destinationTile.x].gameObject);
+    } 
+
+
     void Update()
     {
         

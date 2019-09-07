@@ -2,19 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public abstract class Unit : MonoBehaviour
 {
     protected  Vector3 offset = new Vector3(0,0); //¨musim doplnit offsety jednotek
-    private GameObject Player;
+   
+    protected Hrac player;
+    protected int? groupNumber = null;
+    
+    public int ? getGroupNumber()
+    {
+        return  this.groupNumber;
+    }
+    public void setGroupNumber(int groupNumber)
+    {
+        this.groupNumber = groupNumber;
+    }
 
-    private GameObject getPlayer()
+    public Hrac getPlayer()
     {
-        return this.Player;
+        return this.player;
     }
-    private void setPlayer( GameObject newPlayer)
+    public void setPlayer(Hrac player)
     {
-        this.Player = newPlayer;
+        this.player = player;
     }
+
+   
+  
 
     public virtual void setOffset(Vector3 offsett)
     {
