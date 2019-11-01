@@ -26,6 +26,7 @@ public class Hrac : MonoBehaviour
             groupsOfUnits[y][x].changeToMarked();
         }
     }
+   
     public void deSelectGroupOfUnits(int y)
     {
         //oznaci vsechny jsednotky ve skupine
@@ -65,16 +66,72 @@ public class Hrac : MonoBehaviour
     {
         return 0;
     }
-    public void moveUnitsInGroup(int groupNumber, Vector2 vectorOfmovement)
+    public void moveUnitsInGroup(int groupNumber, Vector2 vectorOfmovement,Vector2 clickedTile)
     {
+        Debug.Log("$------------------Last clicked tile " +clickedTile);
+
+        List<TileClick> movedTiles = new List<TileClick>();
+        mapCreation.helpFieldForTileActualization = new List<Vector2>();
+
         Vector2 finalCoordinates;
-        for(int x=0; x < this.groupsOfUnits[groupNumber].Count; x++)
+
+        //fyzicky presun bojovych jednotek
+        for (int x=0; x < this.groupsOfUnits[groupNumber].Count; x++)
         {
 
-            finalCoordinates = new Vector2 (this.groupsOfUnits[groupNumber][x].getCoordinates().x+ vectorOfmovement.x , this.groupsOfUnits[groupNumber][x].getCoordinates().y + vectorOfmovement.y );
-
-            mapCreation.moveUnits( this.groupsOfUnits[groupNumber][x].getCoordinates(), finalCoordinates);
+            finalCoordinates = new Vector2 (this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().x+ vectorOfmovement.x , this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().y + vectorOfmovement.y );
+            movedTiles.Add( mapCreation.moveUnits( this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild(), finalCoordinates));
             
+
         }
+
+        //aktualizace seznamu jednotek
+        ///asi neni potreba/*
+        /*
+        for(int x = 0; x < this.groupsOfUnits[groupNumber].Count; x++)
+        {
+            //tady muze byt problem
+            Debug.Log($"777777777++++++group accesibility coor update {this.groupsOfUnits[groupNumber][x].getChildObject()}");
+            this.groupsOfUnits[groupNumber][x].setUnitCoordinates(mapCreation.helpFieldForTileActualization[x]);
+        }*/
+
+        //aktualizace na nove blocky bohuzel nevim jestli to jde vyresit jinak kdyz vytvarim nove soubory
+        for (int x = 0; x < this.groupsOfUnits[groupNumber].Count; x++)
+            this.groupsOfUnits[groupNumber][x] = movedTiles[x];
+        
+        
+
+        mapCreation.helpFieldForTileActualization = new List<Vector2>();
+        this.deSelectGroupOfUnits(groupNumber);
+      
+    }
+    public void reverseMoveUnitsInGroup(int groupNumber, Vector2 vectorOfmovementReverseTOPreviusOne, Vector2 componentOfWar)
+    {
+
+        //reverzni pohyb pred implementaci
+        //asi nebude treba implementovat
+        Vector2 finalCoordinates;
+        for (int x = this.groupsOfUnits[groupNumber].Count-1; x > 0 ; x--)
+        {
+            if (this.groupsOfUnits[groupNumber][x] == null)
+            {
+                //place component of war 
+                
+            }
+            //if vektro vzdalenosti odpovida opacnemu componentOfwar se nastakuje
+            Debug.Log($"kontrola souradnic {this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().x + vectorOfmovementReverseTOPreviusOne.x}");
+            Debug.Log($"kontrola souradnic {this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().y + vectorOfmovementReverseTOPreviusOne.y}");
+
+            finalCoordinates = new Vector2(this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().x + vectorOfmovementReverseTOPreviusOne.x,
+                                           this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().y + vectorOfmovementReverseTOPreviusOne.y);
+
+            mapCreation.moveUnits(this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild(), finalCoordinates);
+
+        }
+    }
+    public Hrac getPlayer()
+    {
+        //mozna bude potreba instantiate
+        return this;
     }
 }

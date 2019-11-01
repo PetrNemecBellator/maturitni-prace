@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 548938363126690121}
   - component: {fileID: 3054228421038267151}
   - component: {fileID: 5992222024612074691}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Vez
   m_TagString: Untagged
   m_Icon: {fileID: 0}

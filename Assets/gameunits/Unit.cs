@@ -6,15 +6,24 @@ using UnityEngine;
 public abstract class Unit : MonoBehaviour
 {
     protected  Vector3 offset = new Vector3(0,0); //¨musim doplnit offsety jednotek
-   
+    protected Vector2 coordinatesOfunit;
     protected Hrac player;
     protected int? groupNumber = null;
+    
+    public void setCoordinatesOfunit(Vector2 coordinatesOfunit)
+    {
+        this.coordinatesOfunit = coordinatesOfunit;
+    }
+    public Vector2 getCoordinatesOfUnit()
+    {
+        return this.coordinatesOfunit;
+    }
     
     public int ? getGroupNumber()
     {
         return  this.groupNumber;
     }
-    public void setGroupNumber(int groupNumber)
+    public void setGroupNumber(int ? groupNumber)
     {
         this.groupNumber = groupNumber;
     }
@@ -80,4 +89,12 @@ public abstract class Unit : MonoBehaviour
         throw new System.Exception("Incorect fight option ", new System.Exception());
         return null;
     }
+    public Unit getUnit()
+    {
+        return this;
+    }
+   /* public void setUnit(Unit unit)
+    {
+        this = unit;
+    }*/
 }

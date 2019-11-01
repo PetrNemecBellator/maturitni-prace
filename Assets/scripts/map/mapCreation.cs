@@ -72,11 +72,7 @@ public class mapCreation : MonoBehaviour
       
 
     }
-    public static void moveUnits(List<TileClick> unitsToMove, Vector2 vectorToUnitsMove)
-    {
-
-    }
-
+   
 
     void Start() {
         Debug.Log("MAP CRATION STARTED ...");
@@ -110,7 +106,7 @@ public class mapCreation : MonoBehaviour
         {
             for (int x = 0; x < maptiles[y].Count; x++)
             {
-              //  Debug.Log("name of maptile: " + maptiles[y][x].transform.GetChild(0).name);
+              //  Debug.Log("name of maptile: " + maptiles[y][x].transform.GetChild(1).name);
             }
         }
 
@@ -131,18 +127,41 @@ public class mapCreation : MonoBehaviour
     }
     // Update is called once per frame
 
-    public static void moveUnits(Vector2 tileStart, Vector2 destinationTile)
+
+
+    public static void coordinatesActualization()
     {
+
+    }
+
+    public static List<Vector2> helpFieldForTileActualization = new List<Vector2>();
+    public static TileClick moveUnits(Vector2 tileStart, Vector2 destinationTile)
+    {
+        helpFieldForTileActualization.Add(tileStart);
+
+        TileClick movedTile = new TileClick();
+
+        //tot
         Debug.Log("move group of units TEST");
         Debug.Log("tilestart Coordinates" + tileStart.ToString());
         Debug.Log("tileDESTINATION Coordinates" + destinationTile.ToString());
 
         maptiles[(int)tileStart.y][(int)tileStart.x].changeToUnMark();
         maptiles[(int)destinationTile.y][(int)destinationTile.x].changeToUnMark();
-
-        maptiles[(int)destinationTile.y][(int)destinationTile.x].setTileCoordinates(destinationTile);
-
+        
+        Debug.Log($"\\////////////startovni pozice {tileStart} konecna pozice {destinationTile}");
         TileClick.moveUnitWithFightMode(maptiles[(int)tileStart.y][(int)tileStart.x].gameObject, maptiles[(int)destinationTile.y] [(int)destinationTile.x].gameObject);
+      
+
+      
+        Debug.Log($"//////// destination tile unit coor {maptiles[(int)destinationTile.y][(int)destinationTile.x].getCoordinatesOfTheChild()} " +
+            $"tile coor y{destinationTile.y} x {destinationTile.x} ");
+        
+        
+         movedTile = maptiles[(int)destinationTile.y][(int)destinationTile.x];
+         Debug.Log($"1111111movedTile souradnice{movedTile.getCoordinatesOfTheChild()}");
+        
+        return movedTile;
     } 
 
 
