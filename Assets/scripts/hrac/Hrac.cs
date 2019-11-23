@@ -8,10 +8,11 @@ public class Hrac : MonoBehaviour
     // Start is called before the first frame update
 
     //public for testing
-    private readonly int maximalNumberOfMoves = 8; 
+    private readonly int maximalNumberOfMoves = 8;
+    private List<Vector2> movedTiles = new List<Vector2>();
 
-   // public List<TileClick> placedBlocks;//asi by stacil int nwm proc tu je list
-        
+    // public List<TileClick> placedBlocks;//asi by stacil int nwm proc tu je list
+
     private List<List<TileClick>> groupsOfUnits =new List<List<TileClick>>();
     void Start()
     {
@@ -70,41 +71,51 @@ public class Hrac : MonoBehaviour
     {
         Debug.Log("$------------------Last clicked tile " +clickedTile);
 
-        List<TileClick> movedTiles = new List<TileClick>();
+        //List<TileClick> movedTiles = new List<TileClick>();
+        movedTiles = new List<Vector2>();
+
         mapCreation.helpFieldForTileActualization = new List<Vector2>();
 
         Vector2 finalCoordinates;
-
-        //fyzicky presun bojovych jednotek
-        for (int x=0; x < this.groupsOfUnits[groupNumber].Count; x++)
+        for (int x = 0; x < this.groupsOfUnits[groupNumber].Count; x++)
         {
-
-            finalCoordinates = new Vector2 (this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().x+ vectorOfmovement.x , this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().y + vectorOfmovement.y );
-            movedTiles.Add( mapCreation.moveUnits( this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild(), finalCoordinates));
-            
-
+            Debug.Log(this.groupsOfUnits[groupNumber][x].name);
+            Debug.Log($"^^^^^^^^^^^^^^^^^^^^^^^^^ jmeno stareho objektu" +
+               $" {this.groupsOfUnits[groupNumber][x].getTypeOfUnitCurentlyHaving().name}");
         }
 
-        //aktualizace seznamu jednotek
-        ///asi neni potreba/*
-        /*
-        for(int x = 0; x < this.groupsOfUnits[groupNumber].Count; x++)
-        {
-            //tady muze byt problem
-            Debug.Log($"777777777++++++group accesibility coor update {this.groupsOfUnits[groupNumber][x].getChildObject()}");
-            this.groupsOfUnits[groupNumber][x].setUnitCoordinates(mapCreation.helpFieldForTileActualization[x]);
-        }*/
+        //fyzicky presun bojovych jednotek
+        for (int x=0; x < this.groupsOfUnits[groupNumber].Count; x++){
+            finalCoordinates = new Vector2 (this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().x+ vectorOfmovement.x , this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().y + vectorOfmovement.y );
+            // movedTiles.Add( mapCreation.moveUnits( this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild(), finalCoordinates));
+            mapCreation.moveUnits(this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild(), finalCoordinates);
+            movedTiles.Add(finalCoordinates);
+        }
 
-        //aktualizace na nove blocky bohuzel nevim jestli to jde vyresit jinak kdyz vytvarim nove soubory
-        for (int x = 0; x < this.groupsOfUnits[groupNumber].Count; x++)
-            this.groupsOfUnits[groupNumber][x] = movedTiles[x];
-        
-        
+
+
+
+        updateOldInformationAboutTiles(groupNumber);
 
         mapCreation.helpFieldForTileActualization = new List<Vector2>();
         this.deSelectGroupOfUnits(groupNumber);
       
     }
+    public void updateOldInformationAboutTiles(int? groupNumber)
+    {
+        //aktualizace na nove blocky bohuzel nevim jestli to jde vyresit jinak kdyz vytvarim nove jednotky
+        for (int x = 0; x < this.groupsOfUnits[(int)groupNumber].Count; x++)
+        {
+            this.groupsOfUnits[(int)groupNumber][x] = mapCreation.getTileFromMap(movedTiles[x]);
+            this.groupsOfUnits[(int)groupNumber][x].setTypeOfunitCurentlyhaving();//bere child of tile na indexu 1 a nastavy ho jako aktualni typ jednotky
+            
+            //vez se neaktualizeuje pri pohybu do prava
+            Debug.Log($"//////////////////////////////////////\naktualizace child objektu jeno noveho child objectu" +
+                $" {this.groupsOfUnits[(int)groupNumber][x].getTypeOfUnitCurentlyHaving().name}");//na stit nejde kliknout je tam asi spatne ulozenej objek ale nejsem si jistej
+
+        }
+    }
+
     public void reverseMoveUnitsInGroup(int groupNumber, Vector2 vectorOfmovementReverseTOPreviusOne, Vector2 componentOfWar)
     {
 

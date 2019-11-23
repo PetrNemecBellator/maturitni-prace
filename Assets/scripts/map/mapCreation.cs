@@ -106,6 +106,7 @@ public class mapCreation : MonoBehaviour
         {
             for (int x = 0; x < maptiles[y].Count; x++)
             {
+                
               //  Debug.Log("name of maptile: " + maptiles[y][x].transform.GetChild(1).name);
             }
         }
@@ -135,7 +136,7 @@ public class mapCreation : MonoBehaviour
     }
 
     public static List<Vector2> helpFieldForTileActualization = new List<Vector2>();
-    public static TileClick moveUnits(Vector2 tileStart, Vector2 destinationTile)
+    public static void moveUnits(Vector2 tileStart, Vector2 destinationTile)
     {
         helpFieldForTileActualization.Add(tileStart);
 
@@ -161,9 +162,13 @@ public class mapCreation : MonoBehaviour
          movedTile = maptiles[(int)destinationTile.y][(int)destinationTile.x];
          Debug.Log($"1111111movedTile souradnice{movedTile.getCoordinatesOfTheChild()}");
         
-        return movedTile;
+       // return movedTile;
     } 
 
+    public static TileClick getTileFromMap (Vector2 coordinates)
+    {
+        return mapCreation.maptiles[(int)coordinates.y][(int)coordinates.x];
+    }
 
     void Update()
     {

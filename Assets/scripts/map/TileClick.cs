@@ -50,8 +50,9 @@ public class TileClick : MonoBehaviour
         {
             return false;
         }
-        return (this.getChildObject().GetComponent<Unit>() as Unit == null ? false : !(this.getChildObject().GetComponent<Unit>().getGroupNumber() == null));
+        return (this.getChildObject().GetComponent<Unit>() as Unit == null ? false : !(this.getChildObject().GetComponent<Unit>().getGroupNumber() == null));//neni aktulazovan objekt v poly u hrace (asi)
     }
+
 
     public void groupUnMark()
     {
@@ -113,6 +114,8 @@ public class TileClick : MonoBehaviour
         Debug.Log("");
         Debug.Log("TILECLICK ");
         Debug.Log("tile je ve skupine: " + this.getisInGroup());
+        //bool ktery pozna jesli se jedna o presunute tiles {myslim ze uz existuje}
+        this.GetHrac().updateOldInformationAboutTiles(this.getChildObject().getGroupNumber());
         // Debug.Log("******Souradnice jednotky: " + this.getCoordinatesOfTheChild() + " souradnice tilecliku "); //+ this.getCoordinates);
         try
         {
@@ -294,7 +297,8 @@ public class TileClick : MonoBehaviour
     {
         //funkce ktera ve3kere jednotky posune o velikost vectoru vectorOfNMovement
         lastclikedTile.GetComponent<TileClick>().GetHrac().moveUnitsInGroup((int)lastclikedTile.GetComponent<TileClick>().getChildObject().getGroupNumber(),vectorOfmovement:vectorOfMovement, clickedTile:clickedTile);
- 
+        lastClikedTile = null;
+
     }
 
     public void spawnMovedUnit(GameObject lastClikedTile)
@@ -399,8 +403,10 @@ public class TileClick : MonoBehaviour
     }
     public Unit getChildObject()
     {
+        return (Unit)this.transform.GetChild( this.transform.childCount -1).gameObject.GetComponent<Unit>() as Unit;
+        
         //child object ktery se ma posunout
-        Unit childUnit = (Unit)this.typeOfunitCurectlyHaving.gameObject.GetComponent<Unit>() as Unit;
+      /*  Unit childUnit = (Unit)this.typeOfunitCurectlyHaving.gameObject.GetComponent<Unit>() as Unit;
         Debug.Log("jameno child objectu: " + this.typeOfunitCurectlyHaving.name);
         if (childUnit == null)
         {
@@ -409,7 +415,7 @@ public class TileClick : MonoBehaviour
             return null;
         }
        
-        return childUnit;
+        return childUnit;*/
     }
 
     public void setTypeOfunitNOTForInit(GameObject attackingObject)
@@ -418,9 +424,9 @@ public class TileClick : MonoBehaviour
         //pridat manualni kopirovani vlastnosti
         Debug.Log($"stakovani jednotek kontrola {(this.gameObject.transform.GetComponent<Unit>() != null)} \n " +
             $"pocet deti {this.transform.childCount} get tile click {this.gameObject.transform.GetComponent<TileClick>() != null}");
-        if (attackingObject.gameObject.transform.GetComponent<TileClick>() != null) {
-
-        } else {
+        if (attackingObject.gameObject.transform.GetComponent<TileClick>() != null) throw new System.Exception("WTF is this doing jmeno objektu " + attackingObject.name);
+            
+        
 
 
             Debug.Log("type of placed unit:" + attackingObject.name);
@@ -446,9 +452,22 @@ public class TileClick : MonoBehaviour
             Debug.Log("name of new unit: " + newUnit.name);
 
             Debug.Log($"55555555555555555555555555attacking object child count {attackingObject.transform.parent.transform.childCount} destination object chidl count {this.transform.childCount}");
-            lastClikedTile.GetComponent<TileClick>().unSetUnit();//posledni jednotka
+            lastClikedTile = null ;//posledni jednotka
             Debug.Log($"mazani prebytecnych jednotek na attacking objectu {attackingObject.transform.childCount >= 2} \n childcount {attackingObject.transform.childCount}");
-            if (attackingObject.transform.parent.transform.childCount >= 2 )//zmenil jsem to z 1 //componentOFWar + 1 = 2
+
+           if (attackingObject.transform.parent.transform.childCount > 2){
+            Debug.Log($"attacking object name{attackingObject.name} a destination object name {this.name}");
+            Debug.Log(attackingObject.transform.GetComponent<TileClick>());
+            Debug.Log( attackingObject.transform.parent.GetComponent<TileClick>().typeOfunitCurectlyHaving);
+            var a = attackingObject.transform.parent.transform.GetChild(2).gameObject;
+            Debug.Log(a);
+
+            attackingObject.transform.parent.GetComponent<TileClick>().typeOfunitCurectlyHaving = attackingObject.transform.parent.transform.GetChild(2).gameObject;
+
+            }
+
+
+        if (attackingObject.transform.parent.transform.childCount >= 2 )//zmenil jsem to z 1 //componentOFWar + 1 = 2
             {
                 Debug.Log($"7777777777777777777PODMINKA JE OPRAVDU TRUE attacking object {attackingObject.name} chidl object ktery ma byt znicen {attackingObject.transform.parent.transform.GetChild(1).gameObject.name} ");
 
@@ -467,7 +486,7 @@ public class TileClick : MonoBehaviour
 
 
             return; 
-        }/*
+        /*}
         else {
          //pozor jestli na danem policku uz neco neni potom by se mel v attacking objectu smazat last object
        
@@ -530,7 +549,10 @@ public class TileClick : MonoBehaviour
         Unit attacker;
         Debug.Log("fight mode time function ");
         Debug.Log("Attacker " + attackingObj.transform.GetChild(1).name + "child count" + attackingObj.transform.childCount);
+
         Debug.Log("Pasive obj " + destinationObject.transform.GetChild((destinationObject.transform.childCount-1)).name);
+
+        
 
         try
         {
@@ -656,8 +678,9 @@ public class TileClick : MonoBehaviour
             Debug.Log($"unset name of unit: {this.gameObject.transform.GetChild(1).gameObject.name} ");
             Destroy(this.gameObject.transform.GetChild(1).gameObject);//smazani predchoziho objektu
             this.typeOfunitCurectlyHaving = this.gameObject.transform.GetChild(1).gameObject; //nastaveni aktualniho objektu
-          
+            return;  
         }
+        this.typeOfunitCurectlyHaving = null;
        /* else if(this.gameObject.transform.childCount == 1)
         {
             this.typeOfunitCurectlyHaving = this.gameObject.transform.GetChild(0).gameObject;
@@ -685,7 +708,14 @@ public class TileClick : MonoBehaviour
             
         }*/
     }
-
+    public void setTypeOfunitCurentlyhaving()
+    {
+        this.typeOfunitCurectlyHaving = this.gameObject.transform.GetChild(1).gameObject;
+    }
+    public GameObject getTypeOfUnitCurentlyHaving()
+    {
+        return this.typeOfunitCurectlyHaving;
+    }
     private static void unitMovementSwapOfGameUnits(GameObject activeUnit, GameObject passiveUnit, bool doesTileHaveRedundantunit = true)
     {
 
