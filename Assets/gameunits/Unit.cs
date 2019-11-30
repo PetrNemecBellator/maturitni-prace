@@ -93,6 +93,10 @@ public abstract class Unit : MonoBehaviour
     {
         return this;
     }
+    public void changeLocation(Vector2 coordinatesOfUnit)
+    {
+        this.transform.position = coordinatesOfUnit;
+    }
    /* public void setUnit(Unit unit)
     {
         this = unit;

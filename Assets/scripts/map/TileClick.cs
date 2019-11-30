@@ -14,7 +14,7 @@ public class TileClick : MonoBehaviour
 
     private static bool wasAnyTileClicked = false;
 
-
+    private Vector3 centerCoordinates;
     private bool ithaveBeenClicked = false;
     private GameObject typeOfunitCurectlyHaving;
     private static GameObject lastClikedTile = null;
@@ -82,6 +82,9 @@ public class TileClick : MonoBehaviour
     {
         typeOfunitCurectlyHaving = this.gameObject.transform.GetChild(0).gameObject;
 
+        Renderer tileRenderer = this.gameObject.GetComponent<Renderer>();
+        centerCoordinates = tileRenderer.bounds.center;
+
         // Debug.Log("tile child name: "+ typeOfunitCurectlyHaving.name);
     }
 
@@ -112,6 +115,8 @@ public class TileClick : MonoBehaviour
         Debug.Log("");
         Debug.Log("");
         Debug.Log("TILECLICK ");
+        Debug.Log($"CENTR OF TILE {this.centerCoordinates}");
+
         Debug.Log("tile je ve skupine: " + this.getisInGroup());
         // Debug.Log("******Souradnice jednotky: " + this.getCoordinatesOfTheChild() + " souradnice tilecliku "); //+ this.getCoordinates);
         try
