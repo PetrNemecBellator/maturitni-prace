@@ -22,7 +22,10 @@ public class TileClick : MonoBehaviour
     private static Vector2 CoordinetsOfPreviusObject;
 
 
-
+    public Vector2 getRealWordCoordinates()
+    {
+        return this.transform.position;
+    }
     public Hrac GetHrac()
     {
         if (this.getChildObject() == null)
@@ -40,7 +43,7 @@ public class TileClick : MonoBehaviour
     public void setGroupnumber(int groupnumber)
     {
         //dodelat funci ve hraci ktera do konkretni skupiny prida hraci
-        this.getChildObject().GetComponent<Unit>().setGroupNumber(groupnumber);
+        this.typeOfunitCurectlyHaving.GetComponent<Unit>().setGroupNumber(groupnumber);
         //this.groupNumber = groupnumber;
         //   this.GetHrac().
     }
@@ -397,10 +400,11 @@ public class TileClick : MonoBehaviour
     }
 
     public  Vector3 offsetOfUnit(GameObject unit)
-    {
+    {/*
           Debug.Log("check of offset: X " + unit.GetComponent<Unit>().getoffset().x + " Y:" + unit.GetComponent<Unit>().getoffset().y);
           return new Vector3(this.gameObject.transform.position.x + unit.GetComponent<Unit>().getoffset().x, this.gameObject.transform.position.y + unit.GetComponent<Unit>().getoffset().y, 0); //this.gameObject.transform.position.x)
-
+          */
+        return new Vector3(0, 0, 0);
     }
     public Unit getChildObject()
     {
@@ -472,7 +476,8 @@ public class TileClick : MonoBehaviour
 
 
             return; 
-        }/*
+        }
+        /*
         else {
          //pozor jestli na danem policku uz neco neni potom by se mel v attacking objectu smazat last object
        
@@ -510,12 +515,14 @@ public class TileClick : MonoBehaviour
             }
         }*/
     }
+
     public void setTypeOfunit(GameObject unit){
         //slouží k nastavení jednotek na zacatku hry a pro umistovaní nových jednotek 
 
         Debug.Log("type of placed unit:" + unit.name);
 
-        GameObject newUnit = Instantiate(unit, offsetOfUnit(unit), Quaternion.Euler(0, 0, 0), this.transform);
+        GameObject newUnit = Instantiate(unit, offsetOfUnit(unit), Quaternion.Euler(0, 0, 0)); //,// this.transform);
+
         newUnit.GetComponent<Unit>().setCoordinatesOfunit(this.tileCoordinates);
        
 
@@ -635,7 +642,10 @@ public class TileClick : MonoBehaviour
     }
     
 
-    
+    public void unsetUnit()
+    {
+        this.typeOfunitCurectlyHaving = null;
+    }
 
 
     public void setTypeOfunit(GameObject unit, Vector2 coordinates)//use less
@@ -789,6 +799,11 @@ public class TileClick : MonoBehaviour
         activeUnit.GetComponent<TileClick>().changeToUnMark();
         passiveUnit.GetComponent<TileClick>().changeToUnMark();
         // }
+    }
+
+    public GameObject getTypeOfUnitCurentlyHavin()
+    {
+       return this.typeOfunitCurectlyHaving;
     }
 
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 [System.Serializable]
@@ -92,7 +93,7 @@ public class mapCreation : MonoBehaviour
                     maptiles[y][x].setTypeOfunit(testSip);
 
                 }
-                if (x == 9 && y == 9) {
+                if (x == 0 && y == 0) {
                     Debug.Log("x: " + maptiles[y][x].getCoordinates().x.ToString() + " y: " + maptiles[y][x].getCoordinates().y.ToString());
                     maptiles[y][x].setTypeOfunit(testStit);
 
@@ -101,15 +102,22 @@ public class mapCreation : MonoBehaviour
             }
         }
 
+        Debug.Log(maptiles[0][0].GetComponent<TileClick>().getTypeOfUnitCurentlyHavin().name);
+       
+        changeLocationOfUnit(maptiles[0][0].gameObject, new Vector2(1, 0));
+        /*  for (int y = 0; y < maptiles.Count; y++)
+         {
+             for (int x = 0; x < maptiles[y].Count; x++)
+             {
+                 //  StartCoroutine(testCorutine(maptiles[y][x].GetComponent<TileClick>(), new Vector2(x, y)));
+                 // changeLocationOfUnit(maptiles[y][x].GetComponent<TileClick>(), new Vector2(x,y));
 
-        for (int y = 0; y < maptiles.Count; y++)
-        {
-            for (int x = 0; x < maptiles[y].Count; x++)
-            {
-              //  Debug.Log("name of maptile: " + maptiles[y][x].transform.GetChild(1).name);
-            }
-        }
+                 // maptiles[y][x].setTypeOfunit(testStit);
 
+                 //  Debug.Log("name of maptile: " + maptiles[y][x].transform.GetChild(1).name);
+
+             }
+         }*
         //** tests
         Debug.Log("auto fight TEST");
         Debug.Log("");
@@ -123,12 +131,29 @@ public class mapCreation : MonoBehaviour
         Hrac testHrace = hrac1Test.GetComponent<Hrac>();
         testHrace.setNewGroupOfPlayerUnits(new List<TileClick>() {maptiles[9][9], maptiles[10][10], maptiles[9][10]} );
         testHrace.selectGroupOfUnits(0);
-        // TileClick.moveUnitWithFightMode(  maptiles[9][10].gameObject, maptiles[9][9].gameObject);
+        // TileClick.moveUnitWithFightMode(  maptiles[9][10].gameObject, maptiles[9][9].gameObject);*/
     }
     // Update is called once per frame
 
 
+    public void changeLocationOfUnit(GameObject unit, Vector2 newGameMapPosition)
+    {
+       
+        Debug.Log($"unit name {unit.name} unit location {unit.transform.position}");
+        Debug.Log($" pozice noveho objektu {maptiles[(int)newGameMapPosition.x][(int)newGameMapPosition.y].gameObject.transform.position} ");
 
+        Debug.Log(unit.gameObject.transform.GetComponent<TileClick>().getTypeOfUnitCurentlyHavin());
+        Debug.Log(maptiles[(int)newGameMapPosition.x][(int)newGameMapPosition.y].gameObject);
+
+        unit.gameObject.transform.GetComponent<TileClick>().getTypeOfUnitCurentlyHavin().gameObject.transform.position
+            = maptiles[(int)newGameMapPosition.x][(int)newGameMapPosition.y].gameObject.transform.position;
+
+        unit.transform.GetComponent<TileClick>().unsetUnit();
+
+        Debug.Log($"unit name {unit.name} unit location {unit.transform.position}");
+        Debug.Log($" pozice noveho objektu {maptiles[(int)newGameMapPosition.x][(int)newGameMapPosition.y].gameObject.transform.position} ");
+    }
+    
     public static void coordinatesActualization()
     {
 
