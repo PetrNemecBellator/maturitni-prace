@@ -5,17 +5,22 @@ using UnityEngine;
 [System.Serializable]
 public class Hrac : MonoBehaviour
 {
-    // Start is called before the first frame update
-
-    //public for testing
-    private readonly int maximalNumberOfMoves = 8; 
-
-   // public List<TileClick> placedBlocks;//asi by stacil int nwm proc tu je list
+    /*
+     Třída která definuje hráče a funkce poro práci s jeho jednotkami.
+     */
         
     private List<List<TileClick>> groupsOfUnits =new List<List<TileClick>>();
-    void Start()
+    private int actualMaximalGroupnumber = -1;
+    //get set add unit in group
+    public void addUnitToActualGroup(TileClick tileWithUnit)
     {
-        
+        Debug.Log(this.actualMaximalGroupnumber);
+        this.groupsOfUnits[this.actualMaximalGroupnumber].Add(tileWithUnit);//error
+    }
+    public void initNewGroup()
+    {
+        this.groupsOfUnits.Add(new List<TileClick>());
+        this.actualMaximalGroupnumber++;
     }
     public void selectGroupOfUnits(int y)
     {
@@ -36,10 +41,7 @@ public class Hrac : MonoBehaviour
             groupsOfUnits[y][x].changeToUnMark();
         }
     }
-    public static void moveGroupOfPlayers(Vector2 movementVector, int groupOfPlayers)
-    {
-        //doplnit 
-    }
+    
     public void setNewGroupOfPlayerUnits(List<TileClick> units)
     {
 
@@ -48,7 +50,7 @@ public class Hrac : MonoBehaviour
             units[x].setGroupnumber(this.groupsOfUnits.Count);
             units[x].setPlayer(this);
         }
-
+        
         this.groupsOfUnits.Add(units);
         
     }
@@ -57,78 +59,34 @@ public class Hrac : MonoBehaviour
         return this.groupsOfUnits;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    public int numberOfPossibleMovesByCurUnit()
-    {
-        return 0;
-    }
+    //slozite
+   
     public void moveUnitsInGroup(int groupNumber, Vector2 vectorOfmovement,Vector2 clickedTile)
     {
-        Debug.Log("$------------------Last clicked tile " +clickedTile);
-
-        List<TileClick> movedTiles = new List<TileClick>();
-        mapCreation.helpFieldForTileActualization = new List<Vector2>();
+       //funkce witch will iterate throuw unit group and call teleportationFunction for every unit ( by destination vector)
 
         Vector2 finalCoordinates;
 
         //fyzicky presun bojovych jednotek
         for (int x=0; x < this.groupsOfUnits[groupNumber].Count; x++)
         {
+            Unit originalUnitC = this.groupsOfUnits[groupNumber][x].getTypeOfUnitCurentlyHavin().GetComponent<Unit>() as Unit;// original unit
+            Vector2 origCoorOfunit = originalUnitC.getCoordinatesOfUnit();
 
-            finalCoordinates = new Vector2 (this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().x+ vectorOfmovement.x , this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().y + vectorOfmovement.y );
-            movedTiles.Add( mapCreation.moveUnits( this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild(), finalCoordinates));
-            
 
-        }
-
-        //aktualizace seznamu jednotek
-        ///asi neni potreba/*
-        /*
-        for(int x = 0; x < this.groupsOfUnits[groupNumber].Count; x++)
-        {
-            //tady muze byt problem
-            Debug.Log($"777777777++++++group accesibility coor update {this.groupsOfUnits[groupNumber][x].getChildObject()}");
-            this.groupsOfUnits[groupNumber][x].setUnitCoordinates(mapCreation.helpFieldForTileActualization[x]);
-        }*/
-
-        //aktualizace na nove blocky bohuzel nevim jestli to jde vyresit jinak kdyz vytvarim nove soubory
-        for (int x = 0; x < this.groupsOfUnits[groupNumber].Count; x++)
-            this.groupsOfUnits[groupNumber][x] = movedTiles[x];
-        
-        
-
-        mapCreation.helpFieldForTileActualization = new List<Vector2>();
-        this.deSelectGroupOfUnits(groupNumber);
-      
+            finalCoordinates = new Vector2 (origCoorOfunit.x+ vectorOfmovement.x , origCoorOfunit.y + vectorOfmovement.y );
+           
+            //last clicked tile position, finalCoordinates
+            //udelat teleportaci jednotek a inicializacni "kontruktor pro jednotky" potom otestovat
+           this.groupsOfUnits[groupNumber][x] = mapCreation.moveUnits( origCoorOfunit, finalCoordinates);
+        }      
     }
-    public void reverseMoveUnitsInGroup(int groupNumber, Vector2 vectorOfmovementReverseTOPreviusOne, Vector2 componentOfWar)
+    public int getNumberOfunitsInGroup(int groupnumber)
     {
-
-        //reverzni pohyb pred implementaci
-        //asi nebude treba implementovat
-        Vector2 finalCoordinates;
-        for (int x = this.groupsOfUnits[groupNumber].Count-1; x > 0 ; x--)
-        {
-            if (this.groupsOfUnits[groupNumber][x] == null)
-            {
-                //place component of war 
-                
-            }
-            //if vektro vzdalenosti odpovida opacnemu componentOfwar se nastakuje
-            Debug.Log($"kontrola souradnic {this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().x + vectorOfmovementReverseTOPreviusOne.x}");
-            Debug.Log($"kontrola souradnic {this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().y + vectorOfmovementReverseTOPreviusOne.y}");
-
-            finalCoordinates = new Vector2(this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().x + vectorOfmovementReverseTOPreviusOne.x,
-                                           this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild().y + vectorOfmovementReverseTOPreviusOne.y);
-
-            mapCreation.moveUnits(this.groupsOfUnits[groupNumber][x].getCoordinatesOfTheChild(), finalCoordinates);
-
-        }
+        return this.groupsOfUnits[groupnumber].Count;
     }
+ 
+   
     public Hrac getPlayer()
     {
         //mozna bude potreba instantiate

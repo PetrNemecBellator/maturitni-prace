@@ -22,23 +22,24 @@ public class mapCreation : MonoBehaviour
 
     private void Awake()
     {
-        Vector3 scaleOfObject = backGround.GetComponent<Renderer>().bounds.size; //backGround.GetComponent<Transform>().lossyScale;
+       Vector3 scaleOfObject = backGround.GetComponent<Renderer>().bounds.size; //backGround.GetComponent<Transform>().lossyScale;
         Debug.Log($"x= " + scaleOfObject.x);
         Debug.Log($"Y= " + scaleOfObject.y);
         Debug.Log($"z= " + scaleOfObject.z);
+
         bool changeDirectionOftile = true;
 
 
         int posX = 0;
         int posY = 0;
 
-        for (float y = backGround.transform.transform.position.y - scaleOfObject.y; y < scaleOfObject.y; y += 0.95f)
+        for (float y = backGround.transform.transform.position.y - scaleOfObject.y; y < (0.95f * 17)/*scaleOfObject.y*/; y += 0.95f)
         {
-         
+
             posX = 0;
             List<TileClick> tileRow = new List<TileClick>();
 
-            for (float x = backGround.transform.transform.position.x - scaleOfObject.x; x < scaleOfObject.x * 2 * sizeOfMapBlock; x += sizeOfMapBlock)
+            for (float x = backGround.transform.transform.position.x - scaleOfObject.x; x < (0.95f * 14) /*scaleOfObject.x * 2 * sizeOfMapBlock*/; x += sizeOfMapBlock)
             {
                
                 if (changeDirectionOftile)
@@ -67,6 +68,8 @@ public class mapCreation : MonoBehaviour
                 posX++;
             }
             maptiles.Add(tileRow);
+            changeDirectionOftile = !changeDirectionOftile;
+
 
             posY++;
         }
@@ -75,28 +78,27 @@ public class mapCreation : MonoBehaviour
     }
    
 
-    void Start() {
+    private void Start() {
         Debug.Log("MAP CRATION STARTED ...");
+        Hrac hracTest = hrac1Test.transform.GetComponent<Hrac>();
         for (int y = 0; y < maptiles.Count; y++)
         {
             for (int x = 0; x < maptiles[y].Count; x++)
             {
                 if (x == 10 && y == 9)
                 {
-                    Debug.Log("x: " + maptiles[y][x].getCoordinates().x.ToString() + " y: " + maptiles[y][x].getCoordinates().y.ToString());
-                    maptiles[y][x].setTypeOfunit(testVez);
+                    Debug.Log("x: " + maptiles[y][x].getCoordinatesInMatrix().x.ToString() + " y: " + maptiles[y][x].getCoordinatesInMatrix().y.ToString());
+                    maptiles[y][x].setTypeOfunit(testVez, player:hracTest,false);
 
                 }
                 if (x == 10 && y == 10)
                 {
-                    Debug.Log("x: " + maptiles[y][x].getCoordinates().x.ToString() + " y: " + maptiles[y][x].getCoordinates().y.ToString());
-                    maptiles[y][x].setTypeOfunit(testSip);
-
+                    Debug.Log("x: " + maptiles[y][x].getCoordinatesInMatrix().x.ToString() + " y: " + maptiles[y][x].getCoordinatesInMatrix().y.ToString());
+                    maptiles[y][x].setTypeOfunit(testVez, player: hracTest,false);
                 }
                 if (x == 0 && y == 0) {
-                    Debug.Log("x: " + maptiles[y][x].getCoordinates().x.ToString() + " y: " + maptiles[y][x].getCoordinates().y.ToString());
-                    maptiles[y][x].setTypeOfunit(testStit);
-
+                    Debug.Log("x: " + maptiles[y][x].getCoordinatesInMatrix().x.ToString() + " y: " + maptiles[y][x].getCoordinatesInMatrix().y.ToString());
+                    maptiles[y][x].setTypeOfunit(testVez, player: hracTest,false);
                 }
 
             }
@@ -104,89 +106,41 @@ public class mapCreation : MonoBehaviour
 
         Debug.Log(maptiles[0][0].GetComponent<TileClick>().getTypeOfUnitCurentlyHavin().name);
        
-        changeLocationOfUnit(maptiles[0][0].gameObject, new Vector2(1, 0));
-        /*  for (int y = 0; y < maptiles.Count; y++)
-         {
-             for (int x = 0; x < maptiles[y].Count; x++)
-             {
-                 //  StartCoroutine(testCorutine(maptiles[y][x].GetComponent<TileClick>(), new Vector2(x, y)));
-                 // changeLocationOfUnit(maptiles[y][x].GetComponent<TileClick>(), new Vector2(x,y));
-
-                 // maptiles[y][x].setTypeOfunit(testStit);
-
-                 //  Debug.Log("name of maptile: " + maptiles[y][x].transform.GetChild(1).name);
-
-             }
-         }*
-        //** tests
-        Debug.Log("auto fight TEST");
-        Debug.Log("");
-
-        Debug.Log("maptiles coor attacking unit:" + maptiles[9][10].getCoordinates().x + " y" + maptiles[9][10].getCoordinates().y);
-        Debug.Log("maptiles coor passive unit:" + maptiles[9][9].getCoordinates().x + " y" + maptiles[9][9].getCoordinates().y);
-
-        Debug.Log("chack jednotky: " + maptiles[9][10].getChildObject());
-        Debug.Log("chack jednotky: " + maptiles[9][9].getChildObject());
-
-        Hrac testHrace = hrac1Test.GetComponent<Hrac>();
-        testHrace.setNewGroupOfPlayerUnits(new List<TileClick>() {maptiles[9][9], maptiles[10][10], maptiles[9][10]} );
-        testHrace.selectGroupOfUnits(0);
-        // TileClick.moveUnitWithFightMode(  maptiles[9][10].gameObject, maptiles[9][9].gameObject);*/
+       // changeLocationOfUnit(maptiles[0][0].gameObject, new Vector2(1, 1));
+       //akce z tileclick vola hrace hrac vola nedodelanou funkci  v mapCreation
     }
     // Update is called once per frame
 
-
-    public void changeLocationOfUnit(GameObject unit, Vector2 newGameMapPosition)
-    {
-       
-        Debug.Log($"unit name {unit.name} unit location {unit.transform.position}");
-        Debug.Log($" pozice noveho objektu {maptiles[(int)newGameMapPosition.x][(int)newGameMapPosition.y].gameObject.transform.position} ");
-
-        Debug.Log(unit.gameObject.transform.GetComponent<TileClick>().getTypeOfUnitCurentlyHavin());
-        Debug.Log(maptiles[(int)newGameMapPosition.x][(int)newGameMapPosition.y].gameObject);
-
-        unit.gameObject.transform.GetComponent<TileClick>().getTypeOfUnitCurentlyHavin().gameObject.transform.position
-            = maptiles[(int)newGameMapPosition.x][(int)newGameMapPosition.y].gameObject.transform.position;
-
-        unit.transform.GetComponent<TileClick>().unsetUnit();
-
-        Debug.Log($"unit name {unit.name} unit location {unit.transform.position}");
-        Debug.Log($" pozice noveho objektu {maptiles[(int)newGameMapPosition.x][(int)newGameMapPosition.y].gameObject.transform.position} ");
-    }
     
-    public static void coordinatesActualization()
+   
+
+   
+    public static TileClick  moveUnits(Vector2 tileStartMatrixCor, Vector2 destinationTileMatrixCor)
     {
 
-    }
+        //functction change coordinates in units transfrom.position
+        //function returns Vector2 tu update tyle in player it is used to(mark un mark metod)
 
-    public static List<Vector2> helpFieldForTileActualization = new List<Vector2>();
-    public static TileClick moveUnits(Vector2 tileStart, Vector2 destinationTile)
-    {
-        helpFieldForTileActualization.Add(tileStart);
+        TileClick originalTile = mapCreation.maptiles[(int)tileStartMatrixCor.x][(int)tileStartMatrixCor.y];
+        TileClick destinationTile = mapCreation.maptiles[(int)destinationTileMatrixCor.x][(int)destinationTileMatrixCor.y];
 
-        TileClick movedTile = new TileClick();
-
-        //tot
-        Debug.Log("move group of units TEST");
-        Debug.Log("tilestart Coordinates" + tileStart.ToString());
-        Debug.Log("tileDESTINATION Coordinates" + destinationTile.ToString());
-
-        maptiles[(int)tileStart.y][(int)tileStart.x].changeToUnMark();
-        maptiles[(int)destinationTile.y][(int)destinationTile.x].changeToUnMark();
         
-        Debug.Log($"\\////////////startovni pozice {tileStart} konecna pozice {destinationTile}");
-        TileClick.moveUnitWithFightMode(maptiles[(int)tileStart.y][(int)tileStart.x].gameObject, maptiles[(int)destinationTile.y] [(int)destinationTile.x].gameObject);
-      
+        GameObject typeOfunitCurentlyHaving = originalTile.getTypeOfUnitCurentlyHavin();
 
-      
-        Debug.Log($"//////// destination tile unit coor {maptiles[(int)destinationTile.y][(int)destinationTile.x].getCoordinatesOfTheChild()} " +
-            $"tile coor y{destinationTile.y} x {destinationTile.x} ");
-        
-        
-         movedTile = maptiles[(int)destinationTile.y][(int)destinationTile.x];
-         Debug.Log($"1111111movedTile souradnice{movedTile.getCoordinatesOfTheChild()}");
-        
-        return movedTile;
+
+
+        if (typeOfunitCurentlyHaving == null)
+        {
+            //cancle action 
+            //deselection of curent tile
+            return originalTile;
+        }
+        else{
+            //unit movement
+            destinationTile.moveAndSetTypeOfunitCurenlyHaving(typeOfunitCurentlyHaving);
+            originalTile.setTypeOfUnitCyrentlyHaving(null);
+        }
+        return destinationTile;
     } 
 
 

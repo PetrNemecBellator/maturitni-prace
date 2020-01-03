@@ -5,18 +5,36 @@ using UnityEngine;
 [System.Serializable]
 public abstract class Unit : MonoBehaviour
 {
-    protected  Vector3 offset = new Vector3(0,0); //¨musim doplnit offsety jednotek
-    protected Vector2 coordinatesOfunit;
+    protected  Vector3 offset = new Vector3(0,0); //musim doplnit offsety jednotek
+    
     protected Hrac player;
     protected int? groupNumber = null;
     
-    public void setCoordinatesOfunit(Vector2 coordinatesOfunit)
+
+    private static int maximumGroupNumber = 0;//last last given value to group
+
+    public void initUnit(Hrac player, int groupNumber,bool isInSameGroupAsPreviousGroup)
     {
-        this.coordinatesOfunit = coordinatesOfunit;
+        if (isInSameGroupAsPreviousGroup)
+        {
+            this.player = player;
+            this.groupNumber = (maximumGroupNumber);
+
+        } else{
+            // can be add only higer or same number as maximum
+            Unit.incrementGroupNumber();
+            this.player = player;
+            this.groupNumber = (maximumGroupNumber);
+        }
+        
     }
-    public Vector2 getCoordinatesOfUnit()
-    {
-        return this.coordinatesOfunit;
+
+
+    public void setCoordinatesOfunit(Vector2 coordinatesOfunit){
+        this.gameObject.transform.position = coordinatesOfunit;
+    }
+    public Vector2 getCoordinatesOfUnit(){
+        return this.transform.position;
     }
     
     public int ? getGroupNumber()
@@ -26,6 +44,7 @@ public abstract class Unit : MonoBehaviour
     public void setGroupNumber(int ? groupNumber)
     {
         this.groupNumber = groupNumber;
+        
     }
 
     public Hrac getPlayer()
@@ -48,57 +67,16 @@ public abstract class Unit : MonoBehaviour
     {
         return this.offset;
     }
-    public static Unit unitFight(Unit attackingUnit, Unit passiveUnit)
-    {
-        //funkce co vraci viteze souboje
-        int allPossibilities = 0;
-        do {
-            allPossibilities++;
-            if (attackingUnit is Vez && passiveUnit is Stit)
-            {
-
-                passiveUnit.gameObject.transform.parent.gameObject.GetComponent<TileClick>().changeToUnMark();
-                passiveUnit.gameObject.transform.parent.gameObject.GetComponent<TileClick>().unSetUnit();
-                return attackingUnit;
-
-            } else if (attackingUnit is Sip && passiveUnit is Vez)
-            {
-
-                passiveUnit.gameObject.transform.parent.gameObject.GetComponent<TileClick>().changeToUnMark();
-                passiveUnit.gameObject.transform.parent.gameObject.GetComponent<TileClick>().unSetUnit();
-                return attackingUnit;
-            } else if (attackingUnit is Stit && passiveUnit is Sip)
-            {
-                passiveUnit.gameObject.transform.parent.gameObject.GetComponent<TileClick>().changeToUnMark();
-                passiveUnit.gameObject.transform.parent.gameObject.GetComponent<TileClick>().unSetUnit();
-
-                return attackingUnit;
-            }
-            if (attackingUnit.GetType() == passiveUnit.GetType())
-            {//pokud utoci stejna jednotka na stejnou neni vitez
-
-                return null;
-            }
-
-            Unit helpunit = attackingUnit;
-            attackingUnit = passiveUnit;
-            passiveUnit = helpunit;
-
-        } while (allPossibilities< 2);
-
-        throw new System.Exception("Incorect fight option ", new System.Exception());
-        return null;
-    }
+   
     public Unit getUnit()
     {
         return this;
     }
-    public void changeLocation(Vector2 coordinatesOfUnit)
+   
+    private static void incrementGroupNumber()
     {
-        this.transform.position = coordinatesOfUnit;
+        //increments group number
+        maximumGroupNumber++;
     }
-   /* public void setUnit(Unit unit)
-    {
-        this = unit;
-    }*/
+ 
 }
