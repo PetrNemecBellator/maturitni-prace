@@ -19,73 +19,8 @@ public class TileClick : MonoBehaviour
 
     private static Vector2 CoordinetsOfPreviusObject;
 
-
-    public Vector2 getRealWordCoordinates()
-    {
-        return this.transform.position;
-    }
-    public bool doTileHaveUnit()
-    {
-        return (this.getTypeOfUnitCurentlyHavin() == null);
-    }
-    public Hrac GetHrac()
-    {
-        if (doTileHaveUnit())
-        {
-            Debug.Log("object nema zadnou jednotku");
-            return null;
-        }
-        Hrac player = this.getTypeOfUnitCurentlyHavin().transform.GetComponent<Hrac>();
-        Debug.Log("ziskavam jmeno hrace " + player.name);
-        return player;
-    }
-    public void setPlayer(Hrac player)
-    {
-        Unit currentUnit = this.getTypeOfUnitCurentlyHavin().GetComponent<Unit>();
-        currentUnit.setPlayer(player);
-    }
-    public void setGroupnumber(int groupnumber)
-    {
-        //dodelat funci ve hraci ktera do konkretni skupiny prida hraci
-        this.typeOfunitCurectlyHaving.GetComponent<Unit>().setGroupNumber(groupnumber);
-    }
-    public bool getisInGroup()
-    {
-        if (this.doTileHaveUnit())
-        {
-            return false;
-        }
-        return (this.typeOfunitCurectlyHaving.GetComponent<Unit>() as Unit == null ? 
-            false :
-            !(this.typeOfunitCurectlyHaving.GetComponent<Unit>().getGroupNumber() == null));
-    }
-
-    public void groupUnMark()
-    {//hlidani null hodnoty
-        Unit currentUnit = this.typeOfunitCurectlyHaving.GetComponent<Unit>();
-
-        this.GetHrac().deSelectGroupOfUnits((int)currentUnit.getGroupNumber());
-    }
-    public void groupMark()
-    {
-        //hlidani null hodnoty
-        Unit currentUnit = this.typeOfunitCurectlyHaving.GetComponent<Unit>();
-
-        this.GetHrac().selectGroupOfUnits((int)currentUnit.GetComponent<Unit>().getGroupNumber());
-
-    }
-
-
     protected Vector3 offsetOfunit = new Vector3(0, 0);
 
-    void setOffsetOfUnit(Vector3 offset)
-    {
-        this.offsetOfunit = offset;
-    }
-    public Vector3 getOffsetOfunit()
-    {
-        return this.offsetOfunit;
-    }
 
     private void Awake()
     {
@@ -99,38 +34,9 @@ public class TileClick : MonoBehaviour
         Debug.Log("");
         Debug.Log("");
         Debug.Log("TILECLICK ");
-      
-
-        Debug.Log("tile je ve skupine: " + this.getisInGroup());
-        // Debug.Log("******Souradnice jednotky: " + this.getCoordinatesOfTheChild() + " souradnice tilecliku "); //+ this.getCoordinates);
-        try
+        //nefunguje spravne kdyz kliknu na prazny tile a pak na prazny tile
+       if (this.ithaveBeenClicked)//říká zda už není jednotka aktivovaná
         {
-
-
-            Debug.Log("*****Jmeno child objectu: " + this.typeOfunitCurectlyHaving.name);
-
-        }
-        catch (System.Exception e)
-        {
-            Debug.Log("******Jeden z vypisu je null: \n " + e.Message.ToString() + "\n radek " + e.StackTrace.ToString());
-        }
-
-        if (lastClikedTile != null)
-        {
-            Debug.Log($"je tile ve skupine ?? {this.getisInGroup()} je na posledy clickly tile ve skupine {lastClikedTile.GetComponent<TileClick>().getisInGroup()}");
-
-        }
-        else
-        {
-            Debug.Log($"je tile ve skupine ?? {this.getisInGroup()} je na posledy clickly tile ve skupine NULL");
-
-        }
-
-        if (this.ithaveBeenClicked)
-        {
-
-
-
             if (getisInGroup())
             {
                 this.groupUnMark();
@@ -139,29 +45,20 @@ public class TileClick : MonoBehaviour
             {
                 this.changeToUnMark();
             }
-
-
-
-
             try
             {
-                Debug.Log("!!!!!!!!!!!!!!child object:" + this.transform.GetChild(1).name);
-                Debug.Log("!!!!!!!!!!!!!!child object groupnumber:" + this.transform.GetChild(1).GetComponent<Unit>().getGroupNumber());
-                Debug.Log("!!!!!!!!!!!!!!child object player:" + this.transform.GetChild(1).GetComponent<Unit>().getPlayer().name);
+                Debug.Log("!!!!!!!!!!!!!!child object:" + this.typeOfunitCurectlyHaving.name);
+                Debug.Log("!!!!!!!!!!!!!!child object groupnumber:" + this.typeOfunitCurectlyHaving.GetComponent<Unit>().getGroupNumber());
+                Debug.Log("!!!!!!!!!!!!!!child object player:" + this.typeOfunitCurectlyHaving.GetComponent<Unit>().getPlayer().name);
                 Debug.Log("!!!!!!!!!!!!!!child typeOfUnitCurentlyHaving:" + this.typeOfunitCurectlyHaving);
 
 
             }
-            catch { }
-            finally
-            {
-
-            }
+            catch { Debug.Log("tile nema UNIT"); }
+           
         }
         else
         {
-
-
             Debug.Log("was any tile clicked? " + wasAnyTileClicked.ToString());
             if (!wasAnyTileClicked)
             {
@@ -169,13 +66,14 @@ public class TileClick : MonoBehaviour
                 CoordinetsOfPreviusObject = this.getCoordinatesInMatrix();
                 wasAnyTileClicked = true;
             }
-            Debug.Log("wasAnyTileClicked: " + wasAnyTileClicked + "lastClicked" + lastClikedTile != null + "this?" + lastClikedTile != this.gameObject);
+            Debug.Log("wasAnyTileClicked: " + wasAnyTileClicked + " lastClicked: " + lastClikedTile != null + " this? " + lastClikedTile != this.gameObject);
             Debug.Log(wasAnyTileClicked && lastClikedTile != null && lastClikedTile != this.gameObject);
 
 
             if (wasAnyTileClicked && lastClikedTile != null && lastClikedTile != this.gameObject &&
                 Mathf.Abs(this.getCoordinatesInMatrix().x - CoordinetsOfPreviusObject.x) <= 1 && //zmenit
                 Mathf.Abs((this.getCoordinatesInMatrix().y - CoordinetsOfPreviusObject.y)) <= 1) {
+                Debug.Log("zacal pohyb jednotek");
 
                 Hrac actualPlayer = lastClikedTile.GetComponent<TileClick>().typeOfunitCurectlyHaving.GetComponent<Unit>().getPlayer();
                 Unit actualUnit = lastClikedTile.GetComponent<TileClick>().typeOfunitCurectlyHaving.GetComponent<Unit>();
@@ -183,6 +81,7 @@ public class TileClick : MonoBehaviour
                 Unit attacker = lastClikedTile.transform.GetComponent<TileClick>().getTypeOfUnitCurentlyHavin().transform.GetComponent<Unit>();
                 Unit passiveunit = this.typeOfunitCurectlyHaving.transform.GetComponent<Unit>();
 
+                //pokud je podminka splnena jedná se o souboj
                 if (attacker != null && passiveunit != null)
                 {
                     if (attacker.getPlayer() == passiveunit.getPlayer())
@@ -214,35 +113,27 @@ public class TileClick : MonoBehaviour
                     }
 
                 }
-                else
-                {
+                else{
 
-                    if (lastClikedTile.GetComponent<TileClick>().getisInGroup())
+                    if (actualUnit.getGroupNumber() != null)// it is not allowed to be null
                     {
-                        
+                        Debug.Log("pohyb jednotek");
+                        Debug.Log(actualUnit);
 
                     }
                     else
                     {
-                        //spawnMovedUnit(lastClikedTile);
-
+                        Debug.Log(actualUnit.ToString());
+                        throw new System.Exception("Každý tile by měl mít přidělenou skupinu");
                     }
-
-
-
                 }
-
-
             }
             if (getisInGroup())
             {
                 this.groupMark();
             }
-            else
-            {
-                this.changeToMarked();
+           
 
-            }
 
         }
     endOfClick:;
@@ -320,31 +211,44 @@ public class TileClick : MonoBehaviour
     private void initOfUnit(Unit unitC,Hrac player, bool isInSameGroupAsPreviousUnit)
     {
         unitC.setPlayer(player);
-
+        int ? unitsGroupNumber = null;
         if (isInSameGroupAsPreviousUnit)
         {
-            player.addUnitToActualGroup(this);
+           unitsGroupNumber = player.addUnitToActualGroup(this, unitC);
         } else {
             player.initNewGroup();
-            player.addUnitToActualGroup(this);
+            unitsGroupNumber = player.addUnitToActualGroup(this, unitC);
+
         }
+        if (unitsGroupNumber == null) throw new System.Exception("unit group was not corectly initialized");
+
+        unitC.setGroupNumber(unitsGroupNumber);
+        Debug.Log($"unit init in tyleclick unitC {unitC.getGroupNumber()}");
     }
-    public void setTypeOfunit(GameObject unit, Hrac player, bool isInSameGroupAsPreviousUnit){
-        //slouží k nastavení jednotek na zacatku hry a pro umistovaní nových jednotek 
-        Unit unitC = unit.transform.GetComponent<Unit>();
-
-        initOfUnit(unitC,player ,isInSameGroupAsPreviousUnit);
-
-        Debug.Log("type of placed unit:" + unit.name);
+    public void setTypeOfunit(GameObject unit, Hrac player, bool isInSameGroupAsPreviousUnit) {
+        //slouží k nastavení jednotek na zacatku hry a pro umistovaní nových jednotek        
         GameObject newUnit = Instantiate(unit,this.transform.position, Quaternion.Euler(0, 0, 0)); //,// this.transform);
 
-        newUnit.GetComponent<Unit>().setCoordinatesOfunit(this.transform.position);
+        Unit unitC = newUnit.transform.GetComponent<Unit>();
+
+        initOfUnit(unitC, player, isInSameGroupAsPreviousUnit);
+
+        Debug.Log($"group number Of unit {unitC.getGroupNumber()}");
+
+        unitC.initUnit(player, (int)unitC.getGroupNumber(), isInSameGroupAsPreviousUnit);
+
+        newUnit.GetComponent<Unit>().setCoordinatesOfunit(this.transform.position);//TODO dodelejto
+            //znejakeho důvodu nesouhlasi group number
              
         this.typeOfunitCurectlyHaving = newUnit;
 
+        Debug.Log("********************Checking of copied unit ******************");
         Debug.Log("name of new unit: " + newUnit.name);
+        Debug.Log($"group number of unit {newUnit.GetComponent<Unit>().getGroupNumber().ToString()}");
+        Debug.Log($"unit player {newUnit.GetComponent<Unit>().getPlayer().name.ToString()}");
+
     }
-   
+
     public void unsetUnit()
     {
         this.typeOfunitCurectlyHaving = null;
@@ -359,6 +263,79 @@ public class TileClick : MonoBehaviour
     public GameObject getTypeOfUnitCurentlyHavin()
     {
        return this.typeOfunitCurectlyHaving;
+    }
+    public Vector2 getRealWordCoordinates()
+    {
+        return this.transform.position;
+    }
+    public bool doTileHaveUnit()
+    {
+        return (this.getTypeOfUnitCurentlyHavin() == null);
+    }
+   /* public Hrac GetHrac()
+    {
+        if (doTileHaveUnit())
+        {
+            Debug.Log("object nema zadnou jednotku");
+            return null;
+        }
+        Hrac player = this.getTypeOfUnitCurentlyHavin().transform.GetComponent<Hrac>();
+       // Debug.Log("ziskavam jmeno hrace " + player.ToString());
+        return player;
+    }*/
+    public void setPlayer(Hrac player)
+    {
+        Unit currentUnit = this.getTypeOfUnitCurentlyHavin().GetComponent<Unit>();
+        currentUnit.setPlayer(player);
+    }
+    public void setGroupnumber(int groupnumber)
+    {
+        //dodelat funci ve hraci ktera do konkretni skupiny prida hraci
+        this.typeOfunitCurectlyHaving.GetComponent<Unit>().setGroupNumber(groupnumber);
+    }
+    public bool getisInGroup()
+    {
+        if (this.doTileHaveUnit())
+        {
+            return false;
+        }
+        if (this.typeOfunitCurectlyHaving.GetComponent<Unit>() as Unit == null ){
+            return false;
+        }
+        else
+        {
+            if(!(this.typeOfunitCurectlyHaving.GetComponent<Unit>().getGroupNumber() == null))
+            {
+                return true;
+            }
+            throw new System.Exception("Unit must be in group");
+        }
+         
+    }
+
+    public void groupUnMark()
+    {//hlidani null hodnoty
+        Unit currentUnit = this.typeOfunitCurectlyHaving.GetComponent<Unit>();
+        Hrac player = currentUnit.getPlayer();
+
+        player.deSelectGroupOfUnits((int)currentUnit.getGroupNumber());
+    }
+    public void groupMark()
+    {
+        //hlidani null hodnoty
+        Unit currentUnit = this.typeOfunitCurectlyHaving.GetComponent<Unit>();
+        Hrac player = currentUnit.getPlayer();
+
+        player.selectGroupOfUnits((int)currentUnit.getGroupNumber());
+
+    }
+    void setOffsetOfUnit(Vector3 offset)
+    {
+        this.offsetOfunit = offset;
+    }
+    public Vector3 getOffsetOfunit()
+    {
+        return this.offsetOfunit;
     }
 
 

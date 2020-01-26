@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
 public   class GameLogic : MonoBehaviour {
+    //constants
     private readonly static int maximalNumberOfMoves = 8;
 
     
-    public static int getMaximumNumberOfMoves(int numberOfunitsInGroup)
-    {
+    public static int getMaximumNumberOfMoves(int numberOfunitsInGroup){
         //returns maxial number of moves by unit
         return 1;
     }

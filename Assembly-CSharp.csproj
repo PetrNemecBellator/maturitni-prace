@@ -60,11 +60,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\gameunits\Sip.cs" />
-    <Compile Include="Assets\gameunits\Stit.cs" />
-    <Compile Include="Assets\gameunits\Unit.cs" />
-    <Compile Include="Assets\gameunits\Vez.cs" />
     <Compile Include="Assets\scripts\GameLogic\GameLogic.cs" />
+    <Compile Include="Assets\scripts\GameLogic\Unit.cs" />
+    <Compile Include="Assets\scripts\gameunits\Sip.cs" />
+    <Compile Include="Assets\scripts\gameunits\Stit.cs" />
+    <Compile Include="Assets\scripts\gameunits\Unit.cs" />
+    <Compile Include="Assets\scripts\gameunits\Vez.cs" />
     <Compile Include="Assets\scripts\hrac\Hrac.cs" />
     <Compile Include="Assets\scripts\map\mapCreation.cs" />
     <Compile Include="Assets\scripts\map\TileClick.cs" />

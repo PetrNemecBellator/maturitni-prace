@@ -12,23 +12,28 @@ public class Hrac : MonoBehaviour
     private List<List<TileClick>> groupsOfUnits =new List<List<TileClick>>();
     private int actualMaximalGroupnumber = -1;
     //get set add unit in group
-    public void addUnitToActualGroup(TileClick tileWithUnit)
+    public int ? addUnitToActualGroup(TileClick tileWithUnit, Unit unitC)
     {
+        Debug.Log(tileWithUnit.getTypeOfunitCurentlyHaving().name);
+        unitC.setGroupNumber(this.actualMaximalGroupnumber);
+
         Debug.Log(this.actualMaximalGroupnumber);
         this.groupsOfUnits[this.actualMaximalGroupnumber].Add(tileWithUnit);//error
+
+        return this.actualMaximalGroupnumber;
     }
     public void initNewGroup()
     {
         this.groupsOfUnits.Add(new List<TileClick>());
         this.actualMaximalGroupnumber++;
     }
-    public void selectGroupOfUnits(int y)
+    public void selectGroupOfUnits(int groupNumberOfunit)
     {
         //oznaci vsechny jsednotky ve skupine
-        for (int x =0; x < this.groupsOfUnits[y].Count; x++)
+        for (int x =0; x < this.groupsOfUnits[groupNumberOfunit].Count; x++)
         {
 
-            groupsOfUnits[y][x].changeToMarked();
+            groupsOfUnits[groupNumberOfunit][x].changeToMarked();
         }
     }
    

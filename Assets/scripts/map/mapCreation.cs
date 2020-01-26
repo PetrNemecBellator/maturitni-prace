@@ -39,7 +39,7 @@ public class mapCreation : MonoBehaviour
             posX = 0;
             List<TileClick> tileRow = new List<TileClick>();
 
-            for (float x = backGround.transform.transform.position.x - scaleOfObject.x; x < (0.95f * 14) /*scaleOfObject.x * 2 * sizeOfMapBlock*/; x += sizeOfMapBlock)
+            for (float x = backGround.transform.transform.position.x - scaleOfObject.x; x < (0.95f * 14) ; x += sizeOfMapBlock)
             {
                
                 if (changeDirectionOftile)
@@ -94,7 +94,7 @@ public class mapCreation : MonoBehaviour
                 if (x == 10 && y == 10)
                 {
                     Debug.Log("x: " + maptiles[y][x].getCoordinatesInMatrix().x.ToString() + " y: " + maptiles[y][x].getCoordinatesInMatrix().y.ToString());
-                    maptiles[y][x].setTypeOfunit(testVez, player: hracTest,false);
+                    maptiles[y][x].setTypeOfunit(testVez, player: hracTest,true);
                 }
                 if (x == 0 && y == 0) {
                     Debug.Log("x: " + maptiles[y][x].getCoordinatesInMatrix().x.ToString() + " y: " + maptiles[y][x].getCoordinatesInMatrix().y.ToString());
