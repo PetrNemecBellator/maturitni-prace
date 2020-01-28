@@ -14,7 +14,7 @@ public class Hrac : MonoBehaviour
     //get set add unit in group
     public int ? addUnitToActualGroup(TileClick tileWithUnit, Unit unitC)
     {
-        Debug.Log(tileWithUnit.getTypeOfunitCurentlyHaving().name);
+      //  Debug.Log(tileWithUnit.getTypeOfunitCurentlyHaving().name);
         unitC.setGroupNumber(this.actualMaximalGroupnumber);
 
         Debug.Log(this.actualMaximalGroupnumber);
@@ -66,9 +66,9 @@ public class Hrac : MonoBehaviour
 
     //slozite
    
-    public void moveUnitsInGroup(int groupNumber, Vector2 vectorOfmovement,Vector2 clickedTile)
+    public void moveUnitsInGroup(int groupNumber, Vector2 vectorOfmovement)
     {
-       //funkce witch will iterate throuw unit group and call teleportationFunction for every unit ( by destination vector)
+       //funkce witch will iterate throuw unit group and call teleportationFunction for every unit (by destination vector)
 
         Vector2 finalCoordinates;
 
@@ -76,13 +76,14 @@ public class Hrac : MonoBehaviour
         for (int x=0; x < this.groupsOfUnits[groupNumber].Count; x++)
         {
             Unit originalUnitC = this.groupsOfUnits[groupNumber][x].getTypeOfUnitCurentlyHavin().GetComponent<Unit>() as Unit;// original unit
-            Vector2 origCoorOfunit = originalUnitC.getCoordinatesOfUnit();
-
+            Vector2 origCoorOfunit = this.groupsOfUnits[groupNumber][x].getCoordinatesInMatrix();
 
             finalCoordinates = new Vector2 (origCoorOfunit.x+ vectorOfmovement.x , origCoorOfunit.y + vectorOfmovement.y );
-           
+
             //last clicked tile position, finalCoordinates
             //udelat teleportaci jednotek a inicializacni "kontruktor pro jednotky" potom otestovat
+            Debug.Log($"vector pohybu {vectorOfmovement}");
+            Debug.Log($"puvodni souradnice {origCoorOfunit} cilove souradnice {finalCoordinates} ");
            this.groupsOfUnits[groupNumber][x] = mapCreation.moveUnits( origCoorOfunit, finalCoordinates);
         }      
     }

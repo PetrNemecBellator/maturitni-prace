@@ -100,7 +100,6 @@ public class mapCreation : MonoBehaviour
                     Debug.Log("x: " + maptiles[y][x].getCoordinatesInMatrix().x.ToString() + " y: " + maptiles[y][x].getCoordinatesInMatrix().y.ToString());
                     maptiles[y][x].setTypeOfunit(testVez, player: hracTest,false);
                 }
-
             }
         }
 
@@ -121,13 +120,16 @@ public class mapCreation : MonoBehaviour
         //functction change coordinates in units transfrom.position
         //function returns Vector2 tu update tyle in player it is used to(mark un mark metod)
 
-        TileClick originalTile = mapCreation.maptiles[(int)tileStartMatrixCor.x][(int)tileStartMatrixCor.y];
-        TileClick destinationTile = mapCreation.maptiles[(int)destinationTileMatrixCor.x][(int)destinationTileMatrixCor.y];
+        TileClick originalTile = mapCreation.maptiles[(int)tileStartMatrixCor.y][(int)tileStartMatrixCor.x];
+        TileClick destinationTile = mapCreation.maptiles[(int)destinationTileMatrixCor.y][(int)destinationTileMatrixCor.x];
 
-        
+        //unmatk previosly selected unit
+        originalTile.changeToUnMark();
+
+
         GameObject typeOfunitCurentlyHaving = originalTile.getTypeOfUnitCurentlyHavin();
 
-
+        originalTile.setTypeOfUnitCyrentlyHaving(null);
 
         if (typeOfunitCurentlyHaving == null)
         {
