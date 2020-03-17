@@ -19,7 +19,8 @@ public class mapCreation : MonoBehaviour
         private static List<List<TileClick>> maptiles = new List<List<TileClick>>();
 
     private const float sizeOfMapBlock = 0.8F;
-
+    private const int MAP_HEIGHT = 17;
+    private const int MAP_WIDTH = 14;
     private void Awake()
     {
        Vector3 scaleOfObject = backGround.GetComponent<Renderer>().bounds.size; //backGround.GetComponent<Transform>().lossyScale;
@@ -28,44 +29,74 @@ public class mapCreation : MonoBehaviour
         Debug.Log($"z= " + scaleOfObject.z);
 
         bool changeDirectionOftile = true;
+        bool changeB;
+        bool changeC;
 
+        int b; // diagonala /
+
+        int c; // diagonala opak /
 
         int posX = 0;
         int posY = 0;
 
-        for (float y = backGround.transform.transform.position.y - scaleOfObject.y; y < (0.95f * 17)/*scaleOfObject.y*/; y += 0.95f)
+        for (float y = backGround.transform.transform.position.y - scaleOfObject.y; y < (0.95f * MAP_HEIGHT); y += 0.95f)
         {
+
+            b = posY - ((int)(posY / 2));    // set the starting value of b in a line (from 0 to map height/2; every second line, this starting value is increased by 1)
+            c = (int)((0.95f * MAP_HEIGHT) - posY) / 2;// set the starting value of c in a line (from map height/2 to 0; every second line, this starting value is decreased by 1)
 
             posX = 0;
             List<TileClick> tileRow = new List<TileClick>();
 
-            for (float x = backGround.transform.transform.position.x - scaleOfObject.x; x < (0.95f * 14) ; x += sizeOfMapBlock)
+            for (float x = backGround.transform.transform.position.x - scaleOfObject.x; x < (0.95f * MAP_WIDTH) ; x += sizeOfMapBlock)
             {
                
                 if (changeDirectionOftile)
                 {
-
-                    var obj = Instantiate(gameTile, new Vector3(x * sizeOfMapBlock, y, 0), Quaternion.Euler(0, 0, 180));
+                    
+                    var obj = Instantiate(gameTile, new Vector3(x * sizeOfMapBlock, -y, 0), Quaternion.Euler(0, 0, 180));
                     obj.transform.parent = backGround.transform;
                   
                     TileClick myTile =(TileClick) obj.GetComponent<TileClick>();//accesing my class for the tile object
                     myTile.setTileCoordinates(new Vector2(posX, posY));
+                 
                     tileRow.Add(myTile);
                     changeDirectionOftile = !changeDirectionOftile;
+
+                    changeB = true;
+                    myTile.setCoordinetsForDistanceCalculation(new Vector3(posY, b, c));  // line, diagonal b, diagonal c
+                    if (changeB)
+                    {
+                        b++;  // after two tiles (in one line) the value of b is increased by 1 (-after second same direction of a tile, increse the value of b)
+                        changeB = false;
+                    }
+                    
+
                     
                 }
                 else
                 {
-                    var obj = Instantiate(gameTile, new Vector3(x * sizeOfMapBlock, y, 0), Quaternion.Euler(0, 0, 0));
+                    
+                    var obj = Instantiate(gameTile, new Vector3(x * sizeOfMapBlock, -y, 0), Quaternion.Euler(0, 0, 0));
                     obj.transform.parent = backGround.transform;
 
                     TileClick myTile = (TileClick)obj.GetComponent<TileClick>();//accesing my class for the tile object
                     myTile.setTileCoordinates(new Vector2(posX, posY));
+                  
                     tileRow.Add(myTile);
                     changeDirectionOftile = !changeDirectionOftile;
-                    
+
+                    changeC = true;
+                    myTile.setCoordinetsForDistanceCalculation(new Vector3(posY, b, c));
+                    if (changeC)
+                    {
+                        c++;
+                        changeC = false;
+                    }
                 }
                 posX++;
+
+               
             }
             maptiles.Add(tileRow);
             changeDirectionOftile = !changeDirectionOftile;

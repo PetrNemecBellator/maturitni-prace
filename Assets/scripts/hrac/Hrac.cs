@@ -11,6 +11,11 @@ public class Hrac : MonoBehaviour
         
     private List<List<TileClick>> groupsOfUnits =new List<List<TileClick>>();
     private int actualMaximalGroupnumber = -1;
+
+    //this value represent¨s number of remaing steps in curent round
+    //it will be displayed in up right corner of the screen 
+    private int numberOfRemainingSteps = GameLogic.maximalNumberOfMoves;
+
     //get set add unit in group
     public int ? addUnitToActualGroup(TileClick tileWithUnit, Unit unitC)
     {
@@ -72,9 +77,17 @@ public class Hrac : MonoBehaviour
 
         Vector2 finalCoordinates;
 
-        //fyzicky presun bojovych jednotek
-        for (int x=0; x < this.groupsOfUnits[groupNumber].Count; x++)
+        for (int x = 0; x < this.groupsOfUnits[groupNumber].Count; x++)
         {
+            //po pohybu je to null
+            Unit originalUnitC = this.groupsOfUnits[groupNumber][x].getTypeOfUnitCurentlyHavin().GetComponent<Unit>() as Unit;
+            Debug.Log($"orginal unit {x} {this.groupsOfUnits[groupNumber][x].ToString()}");
+        }
+
+            //fyzicky presun bojovych jednotek
+            for (int x=0; x < this.groupsOfUnits[groupNumber].Count; x++)
+        {
+            //po pohybu je to null
             Unit originalUnitC = this.groupsOfUnits[groupNumber][x].getTypeOfUnitCurentlyHavin().GetComponent<Unit>() as Unit;// original unit
             Vector2 origCoorOfunit = this.groupsOfUnits[groupNumber][x].getCoordinatesInMatrix();
 

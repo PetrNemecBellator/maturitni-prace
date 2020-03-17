@@ -9,10 +9,11 @@ public class TileClick : MonoBehaviour
     public Sprite emptyGamefield;
 
     private Vector2 tileCoordinatesInMatrix;
+    private Vector3 coordinetsForDistanceCalculation;
 
     private static bool wasAnyTileClicked = false;
 
-   
+
     private bool ithaveBeenClicked = false;
     private GameObject typeOfunitCurectlyHaving = null;
     private static GameObject lastClikedTile = null;
@@ -27,22 +28,22 @@ public class TileClick : MonoBehaviour
         //typeOfunitCurectlyHaving = this.gameObject.transform.GetChild(0).gameObject;
     }
 
- 
+
     void OnMouseDown()
     {
         Debug.Log("");
         Debug.Log("");
         Debug.Log("");
         Debug.Log("TILECLICK ");
-        
+
         if (wasAnyTileClicked || (this.getTypeOfUnitCurentlyHavin() as GameObject) != null)
         {
             //nefunguje spravne kdyz kliknu na prazny tile a pak na prazny tile
-           if (this.ithaveBeenClicked)//říká zda už není jednotka aktivovaná
+            if (this.ithaveBeenClicked)//říká zda už není jednotka aktivovaná
             {
-               
-                    this.groupUnMark();
-                
+
+                this.groupUnMark();
+
                 try
                 {
                     Debug.Log("!!!!!!!!!!!!!!child object:" + this.typeOfunitCurectlyHaving.name);
@@ -109,20 +110,20 @@ public class TileClick : MonoBehaviour
                         }
 
                     }
-                    else{
+                    else {
 
                         if (actualUnit.getGroupNumber() != null)// it is not allowed to be null
                         {
                             Debug.Log("pohyb jednotek");
                             Debug.Log(actualUnit);
 
-                            int groupNumber = (int) actualUnit.getGroupNumber();
+                            int groupNumber = (int)actualUnit.getGroupNumber();
                             Vector2 direction = new Vector2(this.getCoordinatesInMatrix().x - lastClickedTileTile.getCoordinatesInMatrix().x,
                                 this.getCoordinatesInMatrix().y - lastClickedTileTile.getCoordinatesInMatrix().y);
 
 
 
-                            actualPlayer.moveUnitsInGroup(groupNumber, direction );
+                            actualPlayer.moveUnitsInGroup(groupNumber, direction);
                         }
                         else
                         {
@@ -136,19 +137,19 @@ public class TileClick : MonoBehaviour
 
                     this.groupMark();
                 }
-           
+
 
 
             }
         }
     endOfClick:;
     }
-   
+
     public void changeToMarked()
     {
         //Debug.Log("loads hraciplochaOznacena");
         //  Sprite tempTexture = (Sprite)Resources.Load<Sprite>("Assets/sprits/textures/gameFieldTextures/hraciPlochaOznacena.png") as Sprite;
-       // Debug.Log(markedGamefield);
+        // Debug.Log(markedGamefield);
 
         this.gameObject.GetComponent<SpriteRenderer>().sprite = markedGamefield;
 
@@ -158,10 +159,10 @@ public class TileClick : MonoBehaviour
     }
     public void changeToUnMark()
     {
-       // Debug.Log("loads hraciplocha neoznacena");
+        // Debug.Log("loads hraciplocha neoznacena");
         //  Sprite tempTexture = (Sprite)Resources.Load<Sprite>("Assets/sprits/textures/gameFieldTextures/hraciPlochaPrazdna.png") as Sprite;
 
-       // Debug.Log(emptyGamefield);
+        // Debug.Log(emptyGamefield);
 
         this.gameObject.GetComponent<SpriteRenderer>().sprite = emptyGamefield;
         this.ithaveBeenClicked = !this.ithaveBeenClicked;
@@ -183,7 +184,7 @@ public class TileClick : MonoBehaviour
     }
     public void setUnitCoordinates(Vector2 value)
     {
-       
+
         this.typeOfunitCurectlyHaving.GetComponent<Unit>().setCoordinatesOfunit(value);
     }
     public Vector2 getCoordinatesInMatrix()
@@ -199,7 +200,7 @@ public class TileClick : MonoBehaviour
         //can be used only in terms of changin coordinates of unit
         this.typeOfunitCurectlyHaving = typeOfunit;
 
-       
+
 
     }
     public void moveAndSetTypeOfunitCurenlyHaving(GameObject typeOfunit)
@@ -210,17 +211,17 @@ public class TileClick : MonoBehaviour
         //change of location of the unit
         this.typeOfunitCurectlyHaving.transform.position = this.transform.position;
     }
- 
-   
 
-    
-    private void initOfUnit(Unit unitC,Hrac player, bool isInSameGroupAsPreviousUnit)
+
+
+
+    private void initOfUnit(Unit unitC, Hrac player, bool isInSameGroupAsPreviousUnit)
     {
         unitC.setPlayer(player);
-        int ? unitsGroupNumber = null;
+        int? unitsGroupNumber = null;
         if (isInSameGroupAsPreviousUnit)
         {
-           unitsGroupNumber = player.addUnitToActualGroup(this, unitC);
+            unitsGroupNumber = player.addUnitToActualGroup(this, unitC);
         } else {
             player.initNewGroup();
             unitsGroupNumber = player.addUnitToActualGroup(this, unitC);
@@ -233,7 +234,7 @@ public class TileClick : MonoBehaviour
     }
     public void setTypeOfunit(GameObject unit, Hrac player, bool isInSameGroupAsPreviousUnit) {
         //slouží k nastavení jednotek na zacatku hry a pro umistovaní nových jednotek        
-        GameObject newUnit = Instantiate(unit,this.transform.position, Quaternion.Euler(0, 0, 0)); //,// this.transform);
+        GameObject newUnit = Instantiate(unit, this.transform.position, Quaternion.Euler(0, 0, 0)); //,// this.transform);
 
         Unit unitC = newUnit.transform.GetComponent<Unit>();
 
@@ -241,8 +242,8 @@ public class TileClick : MonoBehaviour
         unitC.initUnit(player, (int)unitC.getGroupNumber(), isInSameGroupAsPreviousUnit);
 
         newUnit.GetComponent<Unit>().setCoordinatesOfunit(this.transform.position);//TODO dodelejto
-            //znejakeho důvodu nesouhlasi group number
-             
+                                                                                   //znejakeho důvodu nesouhlasi group number
+
         this.typeOfunitCurectlyHaving = newUnit;
 
         Debug.Log("********************Checking of copied unit ******************");
@@ -259,13 +260,13 @@ public class TileClick : MonoBehaviour
 
     public void unSetUnit()
     {
-        this.typeOfunitCurectlyHaving = null;   
-        
+        this.typeOfunitCurectlyHaving = null;
+
     }
 
     public GameObject getTypeOfUnitCurentlyHavin()
     {
-       return this.typeOfunitCurectlyHaving;
+        return this.typeOfunitCurectlyHaving;
     }
     public Vector2 getRealWordCoordinates()
     {
@@ -275,17 +276,7 @@ public class TileClick : MonoBehaviour
     {
         return (this.getTypeOfUnitCurentlyHavin() == null);
     }
-   /* public Hrac GetHrac()
-    {
-        if (doTileHaveUnit())
-        {
-            Debug.Log("object nema zadnou jednotku");
-            return null;
-        }
-        Hrac player = this.getTypeOfUnitCurentlyHavin().transform.GetComponent<Hrac>();
-       // Debug.Log("ziskavam jmeno hrace " + player.ToString());
-        return player;
-    }*/
+   
     public void setPlayer(Hrac player)
     {
         Unit currentUnit = this.getTypeOfUnitCurentlyHavin().GetComponent<Unit>();
@@ -302,18 +293,18 @@ public class TileClick : MonoBehaviour
         {
             return false;
         }
-        if (this.typeOfunitCurectlyHaving.GetComponent<Unit>() as Unit == null ){
+        if (this.typeOfunitCurectlyHaving.GetComponent<Unit>() as Unit == null) {
             return false;
         }
         else
         {
-            if(!(this.typeOfunitCurectlyHaving.GetComponent<Unit>().getGroupNumber() == null))
+            if (!(this.typeOfunitCurectlyHaving.GetComponent<Unit>().getGroupNumber() == null))
             {
                 return true;
             }
             throw new System.Exception("Unit must be in group");
         }
-         
+
     }
 
     public void groupUnMark()
@@ -340,6 +331,12 @@ public class TileClick : MonoBehaviour
     {
         return this.offsetOfunit;
     }
-
-
+   public void setCoordinetsForDistanceCalculation(Vector3 coordinates)
+    {
+        this.coordinetsForDistanceCalculation = coordinates;
+    }
+    public Vector3 getCoordinetsForDistanceCalculation()
+    {
+        return this.coordinetsForDistanceCalculation;
+    }
 }

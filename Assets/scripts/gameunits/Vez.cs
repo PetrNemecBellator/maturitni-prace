@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
-public class Vez :Unit
+public class Vez : Unit
 {
-    public static Vector3 offsett = new Vector3(-0.02F,-0.16F);//constatnt offset of unit
+    public static Vector3 offsett = new Vector3(-0.02F, -0.16F);//constatnt offset of unit
 
     public void Awake()
     {
@@ -14,11 +14,6 @@ public class Vez :Unit
     {
         base.setOffset(offsett);
     }
-
-
-
-
-
 }
 
 

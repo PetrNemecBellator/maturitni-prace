@@ -67,6 +67,7 @@
     <Compile Include="Assets\scripts\gameunits\Unit.cs" />
     <Compile Include="Assets\scripts\gameunits\Vez.cs" />
     <Compile Include="Assets\scripts\hrac\Hrac.cs" />
+    <Compile Include="Assets\scripts\map\AdamsAdresing.cs" />
     <Compile Include="Assets\scripts\map\mapCreation.cs" />
     <Compile Include="Assets\scripts\map\TileClick.cs" />
     <Compile Include="Assets\test\test.cs" />
