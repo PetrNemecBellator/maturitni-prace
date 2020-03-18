@@ -6,7 +6,7 @@ public class GameLogic : MonoBehaviour {
     //constants
     public readonly static int maximalNumberOfMoves = 6;
 
-    private static int getMaximumNumberOfMovesByGroup(int numberOfunitsInGroup) {
+    private static  int ?  getMaximumNumberOfMovesByGroup(int ? numberOfunitsInGroup) {
         
         //returns maxial number of moves by unit
         if (numberOfunitsInGroup == 1)
@@ -20,7 +20,16 @@ public class GameLogic : MonoBehaviour {
         else if (numberOfunitsInGroup >= 3) return (maximalNumberOfMoves / numberOfunitsInGroup) + 2;
 
         throw new System.Exception("No other value is allowed for maximum number of moves");
+        return -1;
     }
+    public static bool  isDistanceReacheble(TileClick startTile,TileClick destinationTile ,int  numberOfUnitsIngroup)
+    {
+
+       throw new System.Exception($"vzdalenost je {AdamsAdresing.calculatePozition(startTile, destinationTile)}  >= " +
+            $"{GameLogic.getMaximumNumberOfMovesByGroup(numberOfUnitsIngroup)}");
+        return (AdamsAdresing.calculatePozition(startTile, destinationTile) <= GameLogic.getMaximumNumberOfMovesByGroup(numberOfUnitsIngroup));
+    }
+
     public static bool isPosibleForCurentGroupToMoveThatFar(TileClick oldTile, TileClick destinationTile)
     {
         //function witch determin if its posivle move as far as destination tile is

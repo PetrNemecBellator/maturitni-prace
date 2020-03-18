@@ -67,15 +67,26 @@ public class TileClick : MonoBehaviour
                 Debug.Log("wasAnyTileClicked: " + wasAnyTileClicked + " lastClicked: " + lastClikedTile != null + " this? " + lastClikedTile != this.gameObject);
                 Debug.Log(wasAnyTileClicked && lastClikedTile != null && lastClikedTile != this.gameObject);
 
+              
 
-                if (wasAnyTileClicked && lastClikedTile != null && lastClikedTile != this.gameObject &&
-                    Mathf.Abs(this.getCoordinatesInMatrix().x - CoordinetsOfPreviusObject.x) <= 1 && //zmenit
-                    Mathf.Abs((this.getCoordinatesInMatrix().y - CoordinetsOfPreviusObject.y)) <= 1) {
+
+
+                if (wasAnyTileClicked && lastClikedTile != null && lastClikedTile != this.gameObject) {
                     Debug.Log("zacal pohyb jednotek");
 
                     Hrac actualPlayer = lastClikedTile.GetComponent<TileClick>().typeOfunitCurectlyHaving.GetComponent<Unit>().getPlayer();
                     Unit actualUnit = lastClikedTile.GetComponent<TileClick>().typeOfunitCurectlyHaving.GetComponent<Unit>();
                     TileClick lastClickedTileTile = lastClikedTile.GetComponent<TileClick>();
+
+
+                    //je to moc daleko
+                    if (!GameLogic.isDistanceReacheble(lastClickedTileTile, this,actualPlayer.getNumberOfunitsInGroup(actualUnit.getGroupNumber())))
+                    {
+                        
+                        goto endOfClick;
+                    }
+
+
 
                     //pokud je podminka splnena jedná se o souboj
                     if (!this.doTileHaveUnit())

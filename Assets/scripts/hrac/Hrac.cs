@@ -100,9 +100,9 @@ public class Hrac : MonoBehaviour
            this.groupsOfUnits[groupNumber][x] = mapCreation.moveUnits( origCoorOfunit, finalCoordinates);
         }      
     }
-    public int getNumberOfunitsInGroup(int groupnumber)
+    public int  getNumberOfunitsInGroup(int? groupnumber)
     {
-        return this.groupsOfUnits[groupnumber].Count;
+        return this.groupsOfUnits[(int)groupnumber].Count;
     }
  
    
