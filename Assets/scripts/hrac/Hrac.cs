@@ -35,20 +35,78 @@ public class Hrac : MonoBehaviour
     public void selectGroupOfUnits(int groupNumberOfunit)
     {
         //oznaci vsechny jsednotky ve skupine
-        for (int x =0; x < this.groupsOfUnits[groupNumberOfunit].Count; x++)
-        {
 
-            groupsOfUnits[groupNumberOfunit][x].changeToMarked();
+        for (int x = 0; x < this.groupsOfUnits[groupNumberOfunit].Count; x++)
+        {
+            rechableTiles(groupsOfUnits[groupNumberOfunit][x], this.groupsOfUnits[groupNumberOfunit].Count);
         }
+
+        for (int x = 0; x < this.groupsOfUnits[groupNumberOfunit].Count; x++)
+        {
+           groupsOfUnits[groupNumberOfunit][x].changeToMarked();
+        }
+
     }
+    private void rechableTiles(TileClick actualTile, int? count)
+    {
+        List<List<TileClick>> mapTiles = mapCreation.getMapTiles();
+        Vector2 coor = actualTile.getCoordinatesInMatrix();
+        Vector2 maximalDistance = new Vector2(Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count) - coor.x),
+            Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count) - coor.y)-1);
+
+        TileClick destinationTile;
+        
+        for (int y=(int)maximalDistance.y; y < (int)maximalDistance.y*4 ; y++)
+        {
+            for (int x = (int)maximalDistance.x; x < (int)maximalDistance.x *2; x++)
+            {
+               
+                destinationTile = mapTiles[y][x];
+                if (GameLogic.isDistanceReacheble(actualTile, destinationTile,(int) count))
+                {
+                    mapTiles[y][x].setReachebleSparit();
+                }
+            }
+        }
+
+    }
+    private void unReachable(TileClick actualTile ,int count)
+    {
+        //tohle se da vyresit mnohem lepe
+        List<List<TileClick>> mapTiles = mapCreation.getMapTiles();
+        Vector2 coor = actualTile.getCoordinatesInMatrix();
+        Vector2 maximalDistance = new Vector2(Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count) - coor.x),
+            Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count) - coor.y) - 1);
+
+        TileClick destinationTile;
+
+        for (int y = (int)maximalDistance.y; y < (int)maximalDistance.y *4; y++)
+        {
+            for (int x = (int)maximalDistance.x; x < (int)maximalDistance.x *2; x++)
+            {
+              
+                destinationTile = mapTiles[y][x];
+                if (GameLogic.isDistanceReacheble(actualTile, destinationTile, (int)count))
+                {
+                    mapTiles[y][x].setUnrechableSkin();
+                }
+            }
+        }
+
+    }
+
    
-    public void deSelectGroupOfUnits(int y)
+    public void deSelectGroupOfUnits(int groupNumberY)
     {
         //oznaci vsechny jsednotky ve skupine
-        for (int x = 0; x < this.groupsOfUnits[y].Count; x++)
+        for (int x = 0; x < this.groupsOfUnits[groupNumberY].Count; x++)
         {
-
-            groupsOfUnits[y][x].changeToUnMark();
+            unReachable(groupsOfUnits[groupNumberY][x], this.groupsOfUnits[groupNumberY].Count);
+          
+        }
+        for (int x = 0; x < this.groupsOfUnits[groupNumberY].Count; x++)
+        {
+            this.groupsOfUnits[groupNumberY][x].changeToUnMark();
         }
     }
     
@@ -76,6 +134,9 @@ public class Hrac : MonoBehaviour
        //funkce witch will iterate throuw unit group and call teleportationFunction for every unit (by destination vector)
 
         Vector2 finalCoordinates;
+        
+
+
 
         for (int x = 0; x < this.groupsOfUnits[groupNumber].Count; x++)
         {
@@ -83,9 +144,9 @@ public class Hrac : MonoBehaviour
             Unit originalUnitC = this.groupsOfUnits[groupNumber][x].getTypeOfUnitCurentlyHavin().GetComponent<Unit>() as Unit;
             Debug.Log($"orginal unit {x} {this.groupsOfUnits[groupNumber][x].ToString()}");
         }
-
-            //fyzicky presun bojovych jednotek
-            for (int x=0; x < this.groupsOfUnits[groupNumber].Count; x++)
+        deSelectGroupOfUnits(groupNumber);
+        //fyzicky presun bojovych jednotek
+        for (int x=0; x < this.groupsOfUnits[groupNumber].Count; x++)
         {
             //po pohybu je to null
             Unit originalUnitC = this.groupsOfUnits[groupNumber][x].getTypeOfUnitCurentlyHavin().GetComponent<Unit>() as Unit;// original unit
@@ -104,8 +165,6 @@ public class Hrac : MonoBehaviour
     {
         return this.groupsOfUnits[(int)groupnumber].Count;
     }
- 
-   
     public Hrac getPlayer()
     {
         //mozna bude potreba instantiate

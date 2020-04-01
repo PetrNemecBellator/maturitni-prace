@@ -7,6 +7,7 @@ public class TileClick : MonoBehaviour
 
     public Sprite markedGamefield;
     public Sprite emptyGamefield;
+    public Sprite rechAbleSprit;
 
     private Vector2 tileCoordinatesInMatrix;
     private Vector3 coordinetsForDistanceCalculation;
@@ -22,26 +23,130 @@ public class TileClick : MonoBehaviour
 
     protected Vector3 offsetOfunit = new Vector3(0, 0);
 
-
-    private void Awake()
+    int? groupNumber1 = 1;
+    int? groupNumber2;
+    private void mark()
     {
-        //typeOfunitCurectlyHaving = this.gameObject.transform.GetChild(0).gameObject;
+        lastClikedTile = this.gameObject;
+        CoordinetsOfPreviusObject = this.getCoordinatesInMatrix();
+        wasAnyTileClicked = true;
+        ithaveBeenClicked = false;
+        this.groupMark();
+        Debug.Log("mark");
+
+        if (this.getTypeOfUnitCurentlyHavin() as GameObject != null)
+        {
+            groupNumber1 = this.getTypeOfUnitCurentlyHavin().GetComponent<Unit>().getGroupNumber();
+        }
+
     }
+    private void unMark()
+    {
+       
 
+        lastClikedTile = null;
+        wasAnyTileClicked = false;
+        ithaveBeenClicked = true;
+        this.groupUnMark();
+        Debug.Log("unmark");
+    }
+    public void logicOfmarkingunits()
+    {
+        if (!wasAnyTileClicked || this.ithaveBeenClicked)
+        {
+            //mark un mark game units
+            if (this.ithaveBeenClicked)
+            {
+                unMark();
+            }
+            else
+            {
+                mark();
+            }
 
-    void OnMouseDown()
+        }
+    }
+    void OnMouseDown()//kliknuti na display nebo myší
     {
         Debug.Log("");
         Debug.Log("");
         Debug.Log("");
         Debug.Log("TILECLICK ");
 
-        if (wasAnyTileClicked || (this.getTypeOfUnitCurentlyHavin() as GameObject) != null)
-        {
-            //nefunguje spravne kdyz kliknu na prazny tile a pak na prazny tile
-            if (this.ithaveBeenClicked)//říká zda už není jednotka aktivovaná
-            {
+        //tady opravdu nen9 spr8vne odliseno jestli se jedn8 o klik na prazn7 tzle klik jenda nebo jestli se jedna o klik dva nevim proc to tu je moc
+        //if ktery aktivuje click jen kdyz je na aktulnim tzlu jednotka
 
+
+        if (this.getTypeOfUnitCurentlyHavin() as GameObject != null && lastClikedTile != null )
+        {
+            groupNumber1 = lastClikedTile.GetComponent<TileClick>().getTypeOfUnitCurentlyHavin().GetComponent<Unit>().getGroupNumber();
+            groupNumber2 = this.getTypeOfUnitCurentlyHavin().GetComponent<Unit>().getGroupNumber();
+        }
+
+
+
+
+        if (lastClikedTile == null || groupNumber1 ==groupNumber2){
+                logicOfmarkingunits();
+        }
+        else{
+                Debug.Log("pohyb jednotek");
+        }
+            
+    }
+            
+            
+    
+
+          
+
+        
+       /* else
+        {
+            if (this.typeOfunitCurectlyHaving == null && lastClikedTile.GetComponent<Unit>() as Unit == null)
+            {//pokud je tile prazndy
+                return;
+            }
+            else
+            {
+                
+                //pokud klikam podruhe a je to na prazdne misto
+                if (this.typeOfunitCurectlyHaving)
+                {//pohyb kdyz jdu na prazdne misto
+
+                }
+                else
+                {//pohyb kdyz jdu na obsazene misto
+
+                }
+                
+            }
+
+        }
+
+
+       /* 
+      
+        if (wasAnyTileClicked || (this.typeOfunitCurectlyHaving != null))
+        {
+            Debug.Log($"souradnice aktualniho tilu {this.tileCoordinatesInMatrix}");
+            try
+            {
+                Debug.Log($"souradnice predposledniho tilu tilu {lastClikedTile.GetComponent<TileClick>().tileCoordinatesInMatrix}");
+
+            }
+            catch { Debug.Log("zadny predchozi tile nebyl"); }
+
+
+            //nefunguje spravne kdyz kliknu na prazny tile a pak na prazny tile
+
+            //deselektnuti aktualni jednotky
+            if (this.ithaveBeenClicked)//říká zda už není jednotka aktivovaná
+            {//deselectnuti aktualni jednokty
+                Debug.Log("type of unit c having: " + this.typeOfunitCurectlyHaving);
+                Debug.Log((((this.getTypeOfUnitCurentlyHavin().GetComponent<Unit>() as Unit) != null)));
+
+                if (this.typeOfunitCurectlyHaving  == null) return;//oprava chyby pri ma
                 this.groupUnMark();
 
                 try
@@ -55,7 +160,7 @@ public class TileClick : MonoBehaviour
                     Debug.Log("tile nema UNIT");
                 }
             }
-            else
+            else//prvni klik na tile s jednotkou
             {
                 Debug.Log("was any tile clicked? " + wasAnyTileClicked.ToString());
                 if (!wasAnyTileClicked)
@@ -63,27 +168,23 @@ public class TileClick : MonoBehaviour
                     lastClikedTile = this.gameObject;
                     CoordinetsOfPreviusObject = this.getCoordinatesInMatrix();
                     wasAnyTileClicked = true;
+                    
                 }
                 Debug.Log("wasAnyTileClicked: " + wasAnyTileClicked + " lastClicked: " + lastClikedTile != null + " this? " + lastClikedTile != this.gameObject);
                 Debug.Log(wasAnyTileClicked && lastClikedTile != null && lastClikedTile != this.gameObject);
-
-              
-
-
-
+                        
+                //pokud umistuji tile
                 if (wasAnyTileClicked && lastClikedTile != null && lastClikedTile != this.gameObject) {
                     Debug.Log("zacal pohyb jednotek");
-
+                    
                     Hrac actualPlayer = lastClikedTile.GetComponent<TileClick>().typeOfunitCurectlyHaving.GetComponent<Unit>().getPlayer();
                     Unit actualUnit = lastClikedTile.GetComponent<TileClick>().typeOfunitCurectlyHaving.GetComponent<Unit>();
                     TileClick lastClickedTileTile = lastClikedTile.GetComponent<TileClick>();
 
 
                     //je to moc daleko
-                    if (!GameLogic.isDistanceReacheble(lastClickedTileTile, this,actualPlayer.getNumberOfunitsInGroup(actualUnit.getGroupNumber())))
-                    {
-                        
-                        goto endOfClick;
+                    if (!GameLogic.isDistanceReacheble(lastClickedTileTile, this,actualPlayer.getNumberOfunitsInGroup(actualUnit.getGroupNumber()))){
+                        return;
                     }
 
 
@@ -100,7 +201,7 @@ public class TileClick : MonoBehaviour
                             Debug.Log("Same player unit");
                             this.changeToUnMark();
                             lastClikedTile.GetComponent<TileClick>().changeToUnMark();
-                            goto endOfClick; //ends attack rutine becouse units are same team
+                            return; //ends attack rutine becouse units are same team
                         }
 
                         Debug.Log("utok normalni utokkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
@@ -152,9 +253,9 @@ public class TileClick : MonoBehaviour
 
 
             }
-        }
-    endOfClick:;
-    }
+        }*/
+   
+    
 
     public void changeToMarked()
     {
@@ -167,6 +268,10 @@ public class TileClick : MonoBehaviour
 
         this.ithaveBeenClicked = !this.ithaveBeenClicked;
         wasAnyTileClicked = true;
+    }
+    public void setUnrechableSkin()
+    {
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = emptyGamefield;
     }
     public void changeToUnMark()
     {
@@ -321,6 +426,11 @@ public class TileClick : MonoBehaviour
     public void groupUnMark()
     {//hlidani null hodnoty
         Unit currentUnit = this.typeOfunitCurectlyHaving.GetComponent<Unit>();
+      
+        Debug.Log($"-------------------------------------");
+        Debug.Log($"-------------------------------------group mark{this.typeOfunitCurectlyHaving}");
+
+        Debug.Log($"-------------------------------------");
         Hrac player = currentUnit.getPlayer();
 
         player.deSelectGroupOfUnits((int)currentUnit.getGroupNumber());
@@ -330,7 +440,7 @@ public class TileClick : MonoBehaviour
         //hlidani null hodnoty
         Unit currentUnit = this.typeOfunitCurectlyHaving.GetComponent<Unit>();
         Hrac player = currentUnit.getPlayer();
-
+      
         player.selectGroupOfUnits((int)currentUnit.getGroupNumber());
 
     }
@@ -342,12 +452,19 @@ public class TileClick : MonoBehaviour
     {
         return this.offsetOfunit;
     }
+
    public void setCoordinetsForDistanceCalculation(Vector3 coordinates)
     {
         this.coordinetsForDistanceCalculation = coordinates;
     }
+
     public Vector3 getCoordinetsForDistanceCalculation()
     {
         return this.coordinetsForDistanceCalculation;
     }
+
+    public void setReachebleSparit(){
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = this.rechAbleSprit;
+    }
+    
 }

@@ -6,7 +6,7 @@ public class GameLogic : MonoBehaviour {
     //constants
     public readonly static int maximalNumberOfMoves = 6;
 
-    private static  int ?  getMaximumNumberOfMovesByGroup(int ? numberOfunitsInGroup) {
+    public static  int ?  getMaximumNumberOfMovesByGroup(int ? numberOfunitsInGroup) {
         
         //returns maxial number of moves by unit
         if (numberOfunitsInGroup == 1)
@@ -25,29 +25,11 @@ public class GameLogic : MonoBehaviour {
     public static bool  isDistanceReacheble(TileClick startTile,TileClick destinationTile ,int  numberOfUnitsIngroup)
     {
 
-       throw new System.Exception($"vzdalenost je {AdamsAdresing.calculatePozition(startTile, destinationTile)}  >= " +
-            $"{GameLogic.getMaximumNumberOfMovesByGroup(numberOfUnitsIngroup)}");
+   
         return (AdamsAdresing.calculatePozition(startTile, destinationTile) <= GameLogic.getMaximumNumberOfMovesByGroup(numberOfUnitsIngroup));
     }
 
-    public static bool isPosibleForCurentGroupToMoveThatFar(TileClick oldTile, TileClick destinationTile)
-    {
-        //function witch determin if its posivle move as far as destination tile is
-        int groupNumber = (int)oldTile.transform.GetComponent<Unit>().getGroupNumber();
-
-        //  |číslo aktualni hodnota - cil poličko| = počet tahů
-
-
-        //distance is dependet on the borthers of the triangle it is not straight line
-        // Vector2 distance = new Vector2(destinationTile.getCoordinatesInMatrix().x - oldTile.getCoordinatesInMatrix().x
-
-        //return true false dependitn on getMaximumNumberOfMovesByGroup() and maximal number of moves
-        return false;//
-
-        //mozna bude nejlepsi kdyz to udelam podle path fiding algoritmu
-       // zmen znazorneni pohybu a dohledu
-
-    }
+   
 
     public static Unit unitFight(Unit attackingUnit, Unit passiveUnit)
     {

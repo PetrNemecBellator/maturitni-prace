@@ -31,8 +31,6 @@ public abstract class Unit : MonoBehaviour
         }
 
     }
-
-
     public void setCoordinatesOfunit(Vector2 coordinatesOfunit)
     {
         this.gameObject.transform.position = coordinatesOfunit;

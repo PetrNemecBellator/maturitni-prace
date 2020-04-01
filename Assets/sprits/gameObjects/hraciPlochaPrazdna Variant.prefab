@@ -12,6 +12,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: hraciPlochaPrazdna Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 1108415268116366286, guid: 6847b34a533bef94192fd92b8e81c081,
+        type: 3}
+      propertyPath: markedGamefield
+      value: 
+      objectReference: {fileID: 21300000, guid: e46eb9d38254c4e4981711fadcb16572,
+        type: 3}
+    - target: {fileID: 1108415268116366286, guid: 6847b34a533bef94192fd92b8e81c081,
+        type: 3}
+      propertyPath: emptyGamefield
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e755c8cb21ed6b4c9e6797040efd9e1,
+        type: 3}
+    - target: {fileID: 1108415268116366286, guid: 6847b34a533bef94192fd92b8e81c081,
+        type: 3}
+      propertyPath: rechAbleSprit
+      value: 
+      objectReference: {fileID: 21300000, guid: 05b2a93f6a6468f4580618fd3fe478a8,
+        type: 3}
     - target: {fileID: 7103501378988850121, guid: 6847b34a533bef94192fd92b8e81c081,
         type: 3}
       propertyPath: m_LocalPosition.x

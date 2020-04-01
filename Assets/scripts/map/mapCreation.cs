@@ -9,7 +9,8 @@ public class mapCreation : MonoBehaviour
     // Start is called before the first frame update
         public GameObject gameTile;
         public GameObject backGround;
-        public GameObject hrac1Test; 
+        public GameObject hrac1Test;
+        public GameObject hrac2Test; 
 
         public GameObject testVez;
         public GameObject testStit;
@@ -70,9 +71,7 @@ public class mapCreation : MonoBehaviour
                         b++;  // after two tiles (in one line) the value of b is increased by 1 (-after second same direction of a tile, increse the value of b)
                         changeB = false;
                     }
-                    
-
-                    
+                                        
                 }
                 else
                 {
@@ -116,25 +115,25 @@ public class mapCreation : MonoBehaviour
         {
             for (int x = 0; x < maptiles[y].Count; x++)
             {
-                if (x == 10 && y == 9)
+                if (x == 11 && y == 9)
                 {
                     Debug.Log("x: " + maptiles[y][x].getCoordinatesInMatrix().x.ToString() + " y: " + maptiles[y][x].getCoordinatesInMatrix().y.ToString());
                     maptiles[y][x].setTypeOfunit(testVez, player:hracTest,false);
 
                 }
-                if (x == 10 && y == 10)
+                if (x == 12 && y == 9)
                 {
                     Debug.Log("x: " + maptiles[y][x].getCoordinatesInMatrix().x.ToString() + " y: " + maptiles[y][x].getCoordinatesInMatrix().y.ToString());
-                    maptiles[y][x].setTypeOfunit(testVez, player: hracTest,true);
+                    maptiles[y][x].setTypeOfunit(testSip, player: hracTest,true);
                 }
-                if (x == 0 && y == 0) {
+                if (x == 8 && y == 10) {
                     Debug.Log("x: " + maptiles[y][x].getCoordinatesInMatrix().x.ToString() + " y: " + maptiles[y][x].getCoordinatesInMatrix().y.ToString());
-                    maptiles[y][x].setTypeOfunit(testVez, player: hracTest,false);
+                    maptiles[y][x].setTypeOfunit(testStit, player: hracTest,false);
                 }
             }
         }
 
-        Debug.Log(maptiles[0][0].GetComponent<TileClick>().getTypeOfUnitCurentlyHavin().name);
+       // Debug.Log(maptiles[0][0].GetComponent<TileClick>().getTypeOfUnitCurentlyHavin().name);
        
        // changeLocationOfUnit(maptiles[0][0].gameObject, new Vector2(1, 1));
        //akce z tileclick vola hrace hrac vola nedodelanou funkci  v mapCreation
@@ -175,12 +174,9 @@ public class mapCreation : MonoBehaviour
         }
         return destinationTile;
     } 
-
-
-    void Update()
+    public static List<List<TileClick>> getMapTiles()
     {
-        
-        
+        return maptiles;
     }
    
 }
