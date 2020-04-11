@@ -60,12 +60,20 @@ public class Hrac : MonoBehaviour
         {
             for (int x = (int)maximalDistance.x; x < (int)maximalDistance.x *2; x++)
             {
-               
-                destinationTile = mapTiles[y][x];
-                if (GameLogic.isDistanceReacheble(actualTile, destinationTile,(int) count))
+                try
                 {
-                    mapTiles[y][x].setReachebleSparit();
+                    destinationTile = mapTiles[y][x];
+                    
+                    if (GameLogic.isDistanceReacheble(actualTile, destinationTile, (int)count))
+                    {
+                        mapTiles[y][x].setReachebleSparit();
+                    }
+                }catch(System.IndexOutOfRangeException e)
+                {
+                    continue;
                 }
+               
+                
             }
         }
 
@@ -84,11 +92,18 @@ public class Hrac : MonoBehaviour
         {
             for (int x = (int)maximalDistance.x; x < (int)maximalDistance.x *2; x++)
             {
-              
-                destinationTile = mapTiles[y][x];
-                if (GameLogic.isDistanceReacheble(actualTile, destinationTile, (int)count))
+                try
                 {
-                    mapTiles[y][x].setUnrechableSkin();
+                    destinationTile = mapTiles[y][x];
+
+                    if (GameLogic.isDistanceReacheble(actualTile, destinationTile, (int)count))
+                    {
+                        mapTiles[y][x].setUnrechableSkin();
+                    }
+                }
+                catch (System.IndexOutOfRangeException e)
+                {
+                    continue;
                 }
             }
         }
@@ -135,15 +150,6 @@ public class Hrac : MonoBehaviour
 
         Vector2 finalCoordinates;
         
-
-
-
-        for (int x = 0; x < this.groupsOfUnits[groupNumber].Count; x++)
-        {
-            //po pohybu je to null
-            Unit originalUnitC = this.groupsOfUnits[groupNumber][x].getTypeOfUnitCurentlyHavin().GetComponent<Unit>() as Unit;
-            Debug.Log($"orginal unit {x} {this.groupsOfUnits[groupNumber][x].ToString()}");
-        }
         deSelectGroupOfUnits(groupNumber);
         //fyzicky presun bojovych jednotek
         for (int x=0; x < this.groupsOfUnits[groupNumber].Count; x++)
@@ -158,8 +164,17 @@ public class Hrac : MonoBehaviour
             //udelat teleportaci jednotek a inicializacni "kontruktor pro jednotky" potom otestovat
             Debug.Log($"vector pohybu {vectorOfmovement}");
             Debug.Log($"puvodni souradnice {origCoorOfunit} cilove souradnice {finalCoordinates} ");
-           this.groupsOfUnits[groupNumber][x] = mapCreation.moveUnits( origCoorOfunit, finalCoordinates);
-        }      
+           this.groupsOfUnits[groupNumber][x] = mapCreation.loadToBuffer( origCoorOfunit, finalCoordinates);
+            
+        }
+        for (int x = 0; x < this.groupsOfUnits[groupNumber].Count; x++)
+        {
+            TileClick actualT = this.groupsOfUnits[groupNumber][x];
+            actualT.moveAndSetTypeOfunitCurenlyHaving();//musi se zmenit i v mapCreation
+            mapCreation.setFromBuffer(actualT.getCoordinatesInMatrix());
+
+        }
+
     }
     public int  getNumberOfunitsInGroup(int? groupnumber)
     {

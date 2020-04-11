@@ -10,7 +10,9 @@ public class mapCreation : MonoBehaviour
         public GameObject gameTile;
         public GameObject backGround;
         public GameObject hrac1Test;
-        public GameObject hrac2Test; 
+        public GameObject hrac2Test;
+
+        public GameObject bufferUnit;
 
         public GameObject testVez;
         public GameObject testStit;
@@ -144,8 +146,7 @@ public class mapCreation : MonoBehaviour
    
 
    
-    public static TileClick  moveUnits(Vector2 tileStartMatrixCor, Vector2 destinationTileMatrixCor)
-    {
+    public static TileClick loadToBuffer(Vector2 tileStartMatrixCor, Vector2 destinationTileMatrixCor){
 
         //functction change coordinates in units transfrom.position
         //function returns Vector2 tu update tyle in player it is used to(mark un mark metod)
@@ -155,7 +156,8 @@ public class mapCreation : MonoBehaviour
 
         //unmatk previosly selected unit
         originalTile.changeToUnMark();
-
+        TileClick.setLastClickedTile(null);
+        TileClick.setWasAnyTileClicked(false);
 
         GameObject typeOfunitCurentlyHaving = originalTile.getTypeOfUnitCurentlyHavin();
 
@@ -167,13 +169,20 @@ public class mapCreation : MonoBehaviour
             //deselection of curent tile
             return originalTile;
         }
-        else{
+        else {
             //unit movement
-            destinationTile.moveAndSetTypeOfunitCurenlyHaving(typeOfunitCurentlyHaving);
+            // destinationTile.moveAndSetTypeOfunitCurenlyHaving(typeOfunitCurentlyHaving);
+            destinationTile.setBuffer(typeOfunitCurentlyHaving);
             originalTile.setTypeOfUnitCyrentlyHaving(null);
         }
         return destinationTile;
-    } 
+    }
+    public static void setFromBuffer(Vector2 tileStartMatrixCor)
+    {
+        TileClick t = mapCreation.maptiles[(int)tileStartMatrixCor.y][(int)tileStartMatrixCor.x];
+        t.setTypeOfUnitCyrentlyHaving(t.getBuffer());
+    }
+
     public static List<List<TileClick>> getMapTiles()
     {
         return maptiles;
