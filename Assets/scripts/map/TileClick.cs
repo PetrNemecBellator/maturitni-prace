@@ -81,8 +81,8 @@ public class TileClick : MonoBehaviour
         if (attacker.getPlayer() == passiveunit.getPlayer())
         {
             Debug.Log("Same player unit");
-            this.changeToUnMark();
-            lastClikedTile.GetComponent<TileClick>().changeToUnMark();
+           // this.changeToUnMark();
+            //lastClikedTile.GetComponent<TileClick>().changeToUnMark();
             return; //ends attack rutine becouse units are same team
         }
 
@@ -140,44 +140,49 @@ public class TileClick : MonoBehaviour
             groupNumber1 = lastClikedTile.GetComponent<TileClick>().getTypeOfUnitCurentlyHavin().GetComponent<Unit>().getGroupNumber();
             groupNumber2 = this.getTypeOfUnitCurentlyHavin().GetComponent<Unit>().getGroupNumber();
         }
+        Debug.Log($"markingUnit {groupNumber1 == groupNumber2 && lastClikedTile as GameObject != null}");
 
-        if ( lastClikedTile == null || groupNumber1 == groupNumber2) {
-            Debug.Log($"markingUnit {groupNumber1 == groupNumber2 && lastClikedTile as GameObject != null}");
+        Debug.Log($"ma se provest klik {!(this.getTypeOfUnitCurentlyHavin() as GameObject == null)} ");
 
-            /* if (!(lastClikedTile as GameObject != null && groupNumber1 == groupNumber2))
-             {//click ; move ; click ; move ; click; move
-                 logicOfmarkingunits();
-             }*/
-            logicOfmarkingunits();
+        if (! (this.getTypeOfUnitCurentlyHavin() as GameObject == null && wasAnyTileClicked == false) )//klikam na prazno
+        {        
+            if ( lastClikedTile == null || groupNumber1 == groupNumber2) {
+
+                /* if (!(lastClikedTile as GameObject != null && groupNumber1 == groupNumber2))
+                 {//click ; move ; click ; move ; click; move
+                     logicOfmarkingunits();
+                 }*/
+                logicOfmarkingunits();
 
 
-        }
-        else
-        {//pohyb jednotek
-                Debug.Log("pohyb jednotek");
+            }
+            else
+            {//pohyb jednotek
+                    Debug.Log("pohyb jednotek");
 
-                Hrac actualPlayer = lastClikedTile.GetComponent<TileClick>().typeOfunitCurectlyHaving.GetComponent<Unit>().getPlayer();
-                Unit actualUnit = lastClikedTile.GetComponent<TileClick>().typeOfunitCurectlyHaving.GetComponent<Unit>();
-                TileClick lastClickedTileTile = lastClikedTile.GetComponent<TileClick>();
+                    Hrac actualPlayer = lastClikedTile.GetComponent<TileClick>().typeOfunitCurectlyHaving.GetComponent<Unit>().getPlayer();
+                    Unit actualUnit = lastClikedTile.GetComponent<TileClick>().typeOfunitCurectlyHaving.GetComponent<Unit>();
+                    TileClick lastClickedTileTile = lastClikedTile.GetComponent<TileClick>();
 
-                //je to moc daleko
-                if (!GameLogic.isDistanceReacheble(lastClickedTileTile, this, actualPlayer.getNumberOfunitsInGroup(actualUnit.getGroupNumber())))
-                {
-                    return;
-                }
+                    //je to moc daleko
+                    if (!GameLogic.isDistanceReacheble(lastClickedTileTile, this, actualPlayer.getNumberOfunitsInGroup(actualUnit.getGroupNumber())))
+                    {
+                        return;
+                    }
 
-                //pokud je podminka splnena jedná se o souboj
-                if (!this.doTileHaveUnit()){
-                    moveOfunitsFightMode();
-                }
-                else{
-                    moveUnits(actualUnit, lastClickedTileTile, actualPlayer);
+                    //pokud je podminka splnena jedná se o souboj
+                    if (!this.doTileHaveUnit()){
+                        moveOfunitsFightMode();
+                    }
+                    else{
+                        moveUnits(actualUnit, lastClickedTileTile, actualPlayer);
 
-                    //lastClikedTile = this.gameObject;
-                }
+                        //lastClikedTile = this.gameObject;
+                    }
             
+            }
         }
-            
+
     }
     public static void setLastClickedTile(GameObject lastClikedTile)
     {
@@ -185,9 +190,7 @@ public class TileClick : MonoBehaviour
     }
             
     public void changeToMarked(){
-
         this.gameObject.GetComponent<SpriteRenderer>().sprite = markedGamefield;
-
 
         this.ithaveBeenClicked = true;
         wasAnyTileClicked = true;
@@ -199,9 +202,9 @@ public class TileClick : MonoBehaviour
     public void changeToUnMark(){
 
         this.gameObject.GetComponent<SpriteRenderer>().sprite = emptyGamefield;
-    
         this.ithaveBeenClicked = false;
         wasAnyTileClicked = false;
+        lastClikedTile = null;
     }
 
     public static bool getWasAnyTileClicked()
@@ -233,9 +236,6 @@ public class TileClick : MonoBehaviour
     {
         //can be used only in terms of changin coordinates of unit
         this.typeOfunitCurectlyHaving = typeOfunit;
-
-
-
     }
     public void setBuffer(GameObject buffer)
     {

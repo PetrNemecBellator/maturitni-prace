@@ -51,29 +51,39 @@ public class Hrac : MonoBehaviour
     {
         List<List<TileClick>> mapTiles = mapCreation.getMapTiles();
         Vector2 coor = actualTile.getCoordinatesInMatrix();
-        Vector2 maximalDistance = new Vector2(Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count) - coor.x),
-            Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count) - coor.y)-1);
+
+        Vector2 leftTopCorner = new Vector2( (Mathf.Abs(coor.x - (float)GameLogic.getMaximumNumberOfMovesByGroup(count) / 2) )-1  ,
+           (Mathf.Abs(coor.y - ((float)GameLogic.getMaximumNumberOfMovesByGroup(count) / 2))  ) -1 );
+
+        Vector2 rigtBottomCorner = new Vector2((Mathf.Abs(((float)GameLogic.getMaximumNumberOfMovesByGroup(count) )+ coor.x)),
+            ((Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count) ) + coor.y) )  ) ;
 
         TileClick destinationTile;
         
-        for (int y=(int)maximalDistance.y; y < (int)maximalDistance.y*4 ; y++)
+        for (int y=(int)leftTopCorner.y; y < (int)rigtBottomCorner.y ; y++)
         {
-            for (int x = (int)maximalDistance.x; x < (int)maximalDistance.x *2; x++)
+            for (int x = (int)leftTopCorner.x; x < (int)rigtBottomCorner.x ; x++)
             {
                 try
                 {
-                    destinationTile = mapTiles[y][x];
-                    
-                    if (GameLogic.isDistanceReacheble(actualTile, destinationTile, (int)count))
+                    destinationTile = mapTiles[y][x];                          
+
+                    if (!GameLogic.isDistanceReacheble(actualTile, destinationTile, (int)count))
                     {
-                        mapTiles[y][x].setReachebleSparit();
+                        continue;
                     }
-                }catch(System.IndexOutOfRangeException e)
+                    mapTiles[y][x].setReachebleSparit();
+                    
+                }
+                catch(System.IndexOutOfRangeException e)
                 {
                     continue;
                 }
-               
-                
+                catch
+                {
+                    continue;
+                }
+          
             }
         }
 
@@ -83,31 +93,41 @@ public class Hrac : MonoBehaviour
         //tohle se da vyresit mnohem lepe
         List<List<TileClick>> mapTiles = mapCreation.getMapTiles();
         Vector2 coor = actualTile.getCoordinatesInMatrix();
-        Vector2 maximalDistance = new Vector2(Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count) - coor.x),
-            Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count) - coor.y) - 1);
+
+        Vector2 leftTopCorner = new Vector2((Mathf.Abs(coor.x - (float)GameLogic.getMaximumNumberOfMovesByGroup(count) / 2)) - 1,
+           (Mathf.Abs(coor.y - ((float)GameLogic.getMaximumNumberOfMovesByGroup(count) / 2))) - 1);
+
+        Vector2 rigtBottomCorner = new Vector2((Mathf.Abs(((float)GameLogic.getMaximumNumberOfMovesByGroup(count)) + coor.x)),
+            ((Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count)) + coor.y)));
 
         TileClick destinationTile;
 
-        for (int y = (int)maximalDistance.y; y < (int)maximalDistance.y *4; y++)
+        for (int y = (int)leftTopCorner.y; y < (int)rigtBottomCorner.y; y++)
         {
-            for (int x = (int)maximalDistance.x; x < (int)maximalDistance.x *2; x++)
+            for (int x = (int)leftTopCorner.x; x < (int)rigtBottomCorner.x; x++)
             {
                 try
                 {
                     destinationTile = mapTiles[y][x];
 
-                    if (GameLogic.isDistanceReacheble(actualTile, destinationTile, (int)count))
+                    if (!GameLogic.isDistanceReacheble(actualTile, destinationTile, (int)count))
                     {
-                        mapTiles[y][x].setUnrechableSkin();
+                        continue;
                     }
+                    mapTiles[y][x].setUnrechableSkin();
+                  
                 }
                 catch (System.IndexOutOfRangeException e)
                 {
                     continue;
                 }
+                catch
+                {
+                    continue;
+                }
+
             }
         }
-
     }
 
    
