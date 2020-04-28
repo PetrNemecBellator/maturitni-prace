@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GameLogic" Collapsed="true">
+    <Position X="6" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIABgAAAiABAAAEAABAAAEA=</HashCode>
+      <FileName>Assets\scripts\GameLogic\GameLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Unit" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAEAiAgQgAIAAAIAAAAAACAAABAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\scripts\GameLogic\Unit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sip" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\scripts\gameunits\Sip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Stit" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\scripts\gameunits\Stit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vez" Collapsed="true">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\scripts\gameunits\Vez.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Hrac" Collapsed="true">
+    <Position X="1.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAQQKACEQABAIAAACAAAgQAACAIAAEAAA=</HashCode>
+      <FileName>Assets\scripts\hrac\Hrac.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TileClick" Collapsed="true">
+    <Position X="3.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAiASAEEApwCAIAAIiACIAEABECEEABomiRTARvgBA=</HashCode>
+      <FileName>Assets\scripts\map\TileClick.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mapCreation" Collapsed="true">
+    <Position X="6" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAACAAACAAANAAgBAKAIIAICAAEAIAAIAAAAAAAEA=</HashCode>
+      <FileName>Assets\scripts\map\mapCreation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

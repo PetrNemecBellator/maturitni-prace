@@ -8,13 +8,19 @@ public class Hrac : MonoBehaviour
     /*
      Třída která definuje hráče a funkce poro práci s jeho jednotkami.
      */
-        
+    private int maximumGroupNumber = -1;//last last given value to group
+
     private List<List<TileClick>> groupsOfUnits =new List<List<TileClick>>();
+    
     private int actualMaximalGroupnumber = -1;
 
     //this value represent¨s number of remaing steps in curent round
     //it will be displayed in up right corner of the screen 
     private int numberOfRemainingSteps = GameLogic.maximalNumberOfMoves;
+
+
+
+
 
     //get set add unit in group
     public int ? addUnitToActualGroup(TileClick tileWithUnit, Unit unitC)
@@ -22,7 +28,7 @@ public class Hrac : MonoBehaviour
       //  Debug.Log(tileWithUnit.getTypeOfunitCurentlyHaving().name);
         unitC.setGroupNumber(this.actualMaximalGroupnumber);
 
-        Debug.Log(this.actualMaximalGroupnumber);
+        Debug.Log($"4444444444444444444444aktualni index {this.actualMaximalGroupnumber}");
         this.groupsOfUnits[this.actualMaximalGroupnumber].Add(tileWithUnit);//error
 
         return this.actualMaximalGroupnumber;
@@ -35,15 +41,15 @@ public class Hrac : MonoBehaviour
     public void selectGroupOfUnits(int groupNumberOfunit)
     {
         //oznaci vsechny jsednotky ve skupine
-
+        Debug.Log($"selektovana skupine {groupNumberOfunit} hrac {this.name}");
         for (int x = 0; x < this.groupsOfUnits[groupNumberOfunit].Count; x++)
         {
-            rechableTiles(groupsOfUnits[groupNumberOfunit][x], this.groupsOfUnits[groupNumberOfunit].Count);
+            rechableTiles(this.groupsOfUnits[groupNumberOfunit][x], this.groupsOfUnits[groupNumberOfunit].Count);
         }
 
         for (int x = 0; x < this.groupsOfUnits[groupNumberOfunit].Count; x++)
         {
-           groupsOfUnits[groupNumberOfunit][x].changeToMarked();
+           this.groupsOfUnits[groupNumberOfunit][x].changeToMarked();
         }
 
     }
@@ -52,11 +58,11 @@ public class Hrac : MonoBehaviour
         List<List<TileClick>> mapTiles = mapCreation.getMapTiles();
         Vector2 coor = actualTile.getCoordinatesInMatrix();
 
-        Vector2 leftTopCorner = new Vector2( (Mathf.Abs(coor.x - (float)GameLogic.getMaximumNumberOfMovesByGroup(count) / 2) )-1  ,
-           (Mathf.Abs(coor.y - ((float)GameLogic.getMaximumNumberOfMovesByGroup(count) / 2))  ) -1 );
+        Vector2 leftTopCorner = new Vector2( (Mathf.Abs(coor.x - (float)GameLogic.getMaximumNumberOfMovesByGroup(count) / 2) )-3  ,
+           (Mathf.Abs(coor.y - ((float)GameLogic.getMaximumNumberOfMovesByGroup(count) / 2))  ) -3 );
 
-        Vector2 rigtBottomCorner = new Vector2((Mathf.Abs(((float)GameLogic.getMaximumNumberOfMovesByGroup(count) )+ coor.x)),
-            ((Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count) ) + coor.y) )  ) ;
+        Vector2 rigtBottomCorner = new Vector2((Mathf.Abs(((float)GameLogic.getMaximumNumberOfMovesByGroup(count) )+ coor.x)) +2,
+            ((Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count) ) + coor.y) ) +2  ) ;
 
         TileClick destinationTile;
         
@@ -94,11 +100,11 @@ public class Hrac : MonoBehaviour
         List<List<TileClick>> mapTiles = mapCreation.getMapTiles();
         Vector2 coor = actualTile.getCoordinatesInMatrix();
 
-        Vector2 leftTopCorner = new Vector2((Mathf.Abs(coor.x - (float)GameLogic.getMaximumNumberOfMovesByGroup(count) / 2)) - 1,
-           (Mathf.Abs(coor.y - ((float)GameLogic.getMaximumNumberOfMovesByGroup(count) / 2))) - 1);
+        Vector2 leftTopCorner = new Vector2((Mathf.Abs(coor.x - (float)GameLogic.getMaximumNumberOfMovesByGroup(count) / 2)) - 3,
+           (Mathf.Abs(coor.y - ((float)GameLogic.getMaximumNumberOfMovesByGroup(count) / 2))) - 3);
 
-        Vector2 rigtBottomCorner = new Vector2((Mathf.Abs(((float)GameLogic.getMaximumNumberOfMovesByGroup(count)) + coor.x)),
-            ((Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count)) + coor.y)));
+        Vector2 rigtBottomCorner = new Vector2((Mathf.Abs(((float)GameLogic.getMaximumNumberOfMovesByGroup(count)) + coor.x)) +2,
+            ((Mathf.Abs((float)GameLogic.getMaximumNumberOfMovesByGroup(count)) + coor.y)) +2);
 
         TileClick destinationTile;
 
@@ -189,12 +195,41 @@ public class Hrac : MonoBehaviour
         }
         for (int x = 0; x < this.groupsOfUnits[groupNumber].Count; x++)
         {
+
             TileClick actualT = this.groupsOfUnits[groupNumber][x];
+            Debug.Log("pocet jednotek ktery se aktualizuje " + this.groupsOfUnits[groupNumber].Count + "souradnice" + this.groupsOfUnits[groupNumber][x].getCoordinatesInMatrix());
             actualT.moveAndSetTypeOfunitCurenlyHaving();//musi se zmenit i v mapCreation
+           
+
+        
             mapCreation.setFromBuffer(actualT.getCoordinatesInMatrix());
 
         }
+    }
+    public void addUnitToGroup(TileClick tileWithUnit, Unit unitC, int groupNumber)
+    {
+        //  Debug.Log(tileWithUnit.getTypeOfunitCurentlyHaving().name);
+        unitC.setGroupNumber(groupNumber);
 
+        Debug.Log($"4444444444444444444444aktualni index {groupNumber}");
+        this.groupsOfUnits[groupNumber].Add(tileWithUnit);//error
+
+    }
+    public void remuveUnit(TileClick tileUnit)
+    {
+
+        Unit unitC = tileUnit.getTypeOfUnitCurentlyHavin().GetComponent<Unit>();
+
+        int indexOfUnit = this.groupsOfUnits[(int)unitC.getGroupNumber()].IndexOf(tileUnit);
+
+        Debug.Log($"co se maze {this.groupsOfUnits[(int)unitC.getGroupNumber()][indexOfUnit].getCoordinatesInMatrix()}");
+
+        mapCreation.removeUnit(tileUnit);
+
+        Destroy(this.groupsOfUnits[(int)unitC.getGroupNumber()][indexOfUnit].getTypeOfUnitCurentlyHavin().gameObject);
+        this.groupsOfUnits[(int)unitC.getGroupNumber()].Remove(tileUnit);
+
+        tileUnit.setTypeOfUnitCyrentlyHaving(null);
     }
     public int  getNumberOfunitsInGroup(int? groupnumber)
     {
@@ -205,4 +240,14 @@ public class Hrac : MonoBehaviour
         //mozna bude potreba instantiate
         return this;
     }
+    public int getMaximumGroupNumber()
+    {
+        return actualMaximalGroupnumber;
+    }
+    public  void incrementGroupNumber()
+    {
+        //increments group number
+        this.maximumGroupNumber++;
+    }
+   
 }

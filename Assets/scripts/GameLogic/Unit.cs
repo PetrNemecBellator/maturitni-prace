@@ -8,10 +8,8 @@ public abstract class Unit : MonoBehaviour
     protected Vector3 offset = new Vector3(0, 0); //musim doplnit offsety jednotek
 
     protected Hrac player;
+
     protected int? groupNumber = null;
-
-
-    private static int maximumGroupNumber = -1;//last last given value to group
 
     public void initUnit(Hrac player, int groupNumber, bool isInSameGroupAsPreviousGroup)
     {
@@ -19,15 +17,15 @@ public abstract class Unit : MonoBehaviour
         if (isInSameGroupAsPreviousGroup)
         {
             this.player = player;
-            this.groupNumber = (maximumGroupNumber);
+            this.groupNumber = (this.player.getMaximumGroupNumber());
 
         }
         else
         {
             // can be add only higer or same number as maximum
-            Unit.incrementGroupNumber();
+            player.incrementGroupNumber();
             this.player = player;
-            this.groupNumber = (maximumGroupNumber);
+            this.groupNumber = (this.player.getMaximumGroupNumber());
         }
 
     }
@@ -71,10 +69,6 @@ public abstract class Unit : MonoBehaviour
         return this;
     }
 
-    private static void incrementGroupNumber()
-    {
-        //increments group number
-        maximumGroupNumber++;
-    }
+  
 
 }

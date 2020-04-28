@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Stit" Collapsed="true">
+    <Position X="2.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\scripts\gameunits\Stit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sip" Collapsed="true">
+    <Position X="2.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\scripts\gameunits\Sip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vez">
+    <Position X="2.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\scripts\gameunits\Vez.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Unit">
+    <Position X="0.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAEAiAgQgAIAAAIAAAAAACAAABAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\scripts\GameLogic\Unit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Hrac">
+    <Position X="9" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAQQKACEQABAIAAACAAAgQAACAIAAEAAA=</HashCode>
+      <FileName>Assets\scripts\hrac\Hrac.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameLogic">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIABgAAAiABAAAEAABAAAEA=</HashCode>
+      <FileName>Assets\scripts\GameLogic\GameLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AdamsAdresing">
+    <Position X="11.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\scripts\map\AdamsAdresing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mapCreation">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAACAAACAAANAAgBAKAIIAICAAEAIAAIAAAAAAAEA=</HashCode>
+      <FileName>Assets\scripts\map\mapCreation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TileClick">
+    <Position X="6" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>ABAiASAEEApwCAIAAIiACIAEABECEEABomiRTARvgBA=</HashCode>
+      <FileName>Assets\scripts\map\TileClick.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

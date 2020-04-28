@@ -111,8 +111,12 @@ public class mapCreation : MonoBehaviour
    
 
     private void Start() {
-        Debug.Log("MAP CRATION STARTED ...");
-        Hrac hracTest = hrac1Test.transform.GetComponent<Hrac>();
+        Debug.Log("MAP TESTING STARTED ...");
+        Hrac hrac1Testh = hrac1Test.transform.GetComponent<Hrac>();
+        Hrac hrac2Testh = hrac2Test.transform.GetComponent<Hrac>();
+
+        GameLogic.setHracWhoIsPlaying(hrac1Testh);
+
         for (int y = 0; y < maptiles.Count; y++)
         {
             for (int x = 0; x < maptiles[y].Count; x++)
@@ -120,17 +124,21 @@ public class mapCreation : MonoBehaviour
                 if (x == 11 && y == 9)
                 {
                     Debug.Log("x: " + maptiles[y][x].getCoordinatesInMatrix().x.ToString() + " y: " + maptiles[y][x].getCoordinatesInMatrix().y.ToString());
-                    maptiles[y][x].setTypeOfunit(testVez, player:hracTest,false);
+                    maptiles[y][x].setTypeOfunit(testVez, player: hrac1Testh, true);
 
                 }
-                if (x == 12 && y == 9)
+                else if (x == 12 && y == 9)
                 {
                     Debug.Log("x: " + maptiles[y][x].getCoordinatesInMatrix().x.ToString() + " y: " + maptiles[y][x].getCoordinatesInMatrix().y.ToString());
-                    maptiles[y][x].setTypeOfunit(testSip, player: hracTest,true);
+                    maptiles[y][x].setTypeOfunit(testSip, player: hrac1Testh, true);
                 }
-                if (x == 8 && y == 10) {
+                else if (x == 11 && y == 8) {
                     Debug.Log("x: " + maptiles[y][x].getCoordinatesInMatrix().x.ToString() + " y: " + maptiles[y][x].getCoordinatesInMatrix().y.ToString());
-                    maptiles[y][x].setTypeOfunit(testStit, player: hracTest,false);
+                    maptiles[y][x].setTypeOfunit(testStit, player: hrac1Testh, false);
+                }
+                else if (x==7 && y==8)
+                {
+                    maptiles[y][x].setTypeOfunit(testStit, player: hrac2Testh, false);
                 }
             }
         }
@@ -142,11 +150,11 @@ public class mapCreation : MonoBehaviour
     }
     // Update is called once per frame
 
-    
-   
 
-   
-    public static TileClick loadToBuffer(Vector2 tileStartMatrixCor, Vector2 destinationTileMatrixCor){
+
+
+
+    public static TileClick loadToBuffer(Vector2 tileStartMatrixCor, Vector2 destinationTileMatrixCor) {
 
         //functction change coordinates in units transfrom.position
         //function returns Vector2 tu update tyle in player it is used to(mark un mark metod)
@@ -154,38 +162,81 @@ public class mapCreation : MonoBehaviour
         TileClick originalTile = mapCreation.maptiles[(int)tileStartMatrixCor.y][(int)tileStartMatrixCor.x];
         TileClick destinationTile = mapCreation.maptiles[(int)destinationTileMatrixCor.y][(int)destinationTileMatrixCor.x];
 
-        //unmatk previosly selected unit
-        originalTile.changeToUnMark();
-        TileClick.setLastClickedTile(null);
-        TileClick.setWasAnyTileClicked(false);
-
-        GameObject typeOfunitCurentlyHaving = originalTile.getTypeOfUnitCurentlyHavin();
-
-        originalTile.setTypeOfUnitCyrentlyHaving(null);
-
-        if (typeOfunitCurentlyHaving == null)
+        //fight check move units with fight mode ma bejt tu
+        Hrac h1 = originalTile.getTypeOfUnitCurentlyHavin().GetComponent<Unit>().getPlayer();
+        Hrac h2;
+        try { 
+            h2 = destinationTile.getTypeOfUnitCurentlyHavin().GetComponent<Unit>().getPlayer();
+        }
+        catch
         {
-            //cancle action 
-            //deselection of curent tile
-            return originalTile;
+            h2 = null;
         }
-        else {
-            //unit movement
-            // destinationTile.moveAndSetTypeOfunitCurenlyHaving(typeOfunitCurentlyHaving);
-            destinationTile.setBuffer(typeOfunitCurentlyHaving);
+        Debug.Log(h1 + $"originalTile{originalTile.getCoordinatesInMatrix()}");
+        Debug.Log(h1 + $"destinationTile{destinationTile.getCoordinatesInMatrix()}");
+
+        
+        
+            //unmatk previosly selected unit
+            originalTile.changeToUnMark();
+            TileClick.setLastClickedTile(null);
+            TileClick.setWasAnyTileClicked(false);
+
+            GameObject typeOfunitCurentlyHaving = originalTile.getTypeOfUnitCurentlyHavin();
+
             originalTile.setTypeOfUnitCyrentlyHaving(null);
-        }
-        return destinationTile;
+
+            if (typeOfunitCurentlyHaving == null)
+            {
+                //cancle action 
+                //deselection of curent tile
+                return originalTile;
+            }
+            else
+            {
+                //unit 
+
+                // destinationTile.moveAndSetTypeOfunitCurenlyHaving(typeOfunitCurentlyHaving);
+                destinationTile.setBuffer(typeOfunitCurentlyHaving);
+                originalTile.setTypeOfUnitCyrentlyHaving(null);
+            }
+            return destinationTile;
+     
+
+
     }
     public static void setFromBuffer(Vector2 tileStartMatrixCor)
     {
         TileClick t = mapCreation.maptiles[(int)tileStartMatrixCor.y][(int)tileStartMatrixCor.x];
+
+      /*  Unit winnerUnit = TileClick.moveOfunitsFightMode(t, t.getTypeOfUnitCurentlyHavin());
+
         t.setTypeOfUnitCyrentlyHaving(t.getBuffer());
+
+      */
+        /* if (!(h1 == null || h2 == null))
+        {
+            if (h1 != h2)
+            {
+                //fight
+                Unit winnerUnit = TileClick.moveOfunitsFightMode(originalTile, destinationTile);
+                mapCreation.setFromBuffer(actualT.getCoordinatesInMatrix());
+               
+            }
+        }*/
+
+       
     }
 
     public static List<List<TileClick>> getMapTiles()
     {
         return maptiles;
+    }
+    public static void removeUnit(TileClick tile)
+    {
+        Vector2 coordinates = tile.getCoordinatesInMatrix();
+
+        mapCreation.maptiles[(int)coordinates.x][(int)coordinates.y].setTypeOfUnitCyrentlyHaving(null);
     }
    
 }

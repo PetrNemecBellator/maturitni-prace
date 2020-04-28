@@ -5,7 +5,29 @@ using UnityEngine;
 public class GameLogic : MonoBehaviour {
     //constants
     public readonly static int maximalNumberOfMoves = 6;
+    private static Hrac actualPlayer;
+    public static void setHracWhoIsPlaying(Hrac actualPlayer) {
+        GameLogic.actualPlayer = actualPlayer;
+    }
+    public static Hrac getHracWhoIsPlaying() {
+        return GameLogic.actualPlayer;
+    }
+    public static bool isItMyUnit(GameObject actualPlayerUnit)
+    {
+        Unit curretnUnitGameObject;
+        
+        curretnUnitGameObject = actualPlayerUnit.GetComponent<Unit>();
+        
+     
 
+        Hrac actualPlayer = curretnUnitGameObject.getPlayer();
+
+        /* if (actualPlayer as Hrac == null) return false;
+         if (curretnUnitGameObject == null) return false;*/
+        Debug.Log($"itIt My unit {getHracWhoIsPlaying() == actualPlayer}");
+        return getHracWhoIsPlaying() == actualPlayer;
+    }
+        
     public static  int ?  getMaximumNumberOfMovesByGroup(int ? numberOfunitsInGroup) {
         
         //returns maxial number of moves by unit
@@ -24,13 +46,8 @@ public class GameLogic : MonoBehaviour {
     }
     public static bool  isDistanceReacheble(TileClick startTile,TileClick destinationTile ,int  numberOfUnitsIngroup)
     {
-
-   
         return (AdamsAdresing.calculatePozition(startTile, destinationTile) <= GameLogic.getMaximumNumberOfMovesByGroup(numberOfUnitsIngroup));
     }
-
-   
-
     public static Unit unitFight(Unit attackingUnit, Unit passiveUnit)
     {
         //funkce co vraci viteze souboje
@@ -40,9 +57,9 @@ public class GameLogic : MonoBehaviour {
             allPossibilities++;
             if (attackingUnit is Vez && passiveUnit is Stit)
             {
-
                 passiveUnit.gameObject.transform.parent.gameObject.GetComponent<TileClick>().changeToUnMark();
                 passiveUnit.gameObject.transform.parent.gameObject.GetComponent<TileClick>().unSetUnit();
+                
                 return attackingUnit;
 
             }
